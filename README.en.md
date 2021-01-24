@@ -1,7 +1,10 @@
 # LingLongGUI
 
 #### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
+玲珑GUI是高效的界面开发解决方案。
+代替串口屏、组态，降低产品成本，产品软硬件自主可控。
+配套界面开发软件，图形化编辑界面，生成C代码，直接和用户产品代码结合。
+配套下载升级软件和bootloader，解决产品升级功能和图片下载问题。
 
 #### Software Architecture
 Software architecture description
