@@ -101,7 +101,6 @@ void llFontOpenLibrary(llFontLibType fontLibType,uint8_t* fontName, uint16_t fon
                             strcat((char*)path,"fonts/");
                             strcat((char*)path,(const char*)fontName);
                             strcat((char*)path,".zk");
-//                            LLPRINT_STR(path);
                             llZkBin_fontOpenLibrary(path);
                             llFree(path);
                         }

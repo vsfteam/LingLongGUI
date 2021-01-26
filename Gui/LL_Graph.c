@@ -77,13 +77,6 @@ void pGraphRefresh(llGraph *widget)
     graphOriginPos.x=widget->geometry.x+globalPos.x;
     graphOriginPos.y=widget->geometry.y+globalPos.y+widget->geometry.height-1;
 
-//    LLPRINT_NUM("x",(widget->geometry.x+globalPos.x));
-//    LLPRINT_NUM("y",(widget->geometry.y+globalPos.y));
-//    LLPRINT_NUM("w",widget->geometry.width);
-//    LLPRINT_NUM("h",widget->geometry.height);
-
-//    LLPRINT_NUM("origin x",graphOriginPos.x);
-//    LLPRINT_NUM("origin y",graphOriginPos.y);
     //画背景
     llFillSingleColor(widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y,widget->geometry.x+globalPos.x+widget->geometry.width-1,widget->geometry.y+globalPos.y+widget->geometry.height-1,widget->backgroundColor);
 

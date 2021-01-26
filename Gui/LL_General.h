@@ -18,8 +18,8 @@
  * must be released under GPL compatible free software license or commercial license.
 */
 
-#ifndef _XGENERAL_H_
-#define _XGENERAL_H_
+#ifndef _LL_GENERAL_H_
+#define _LL_GENERAL_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -201,4 +201,4 @@ bool llGeometryAutoSetHiddenIsShow(llGeneral *widget,bool isHidden);
 }
 #endif
 
-#endif //_XGENERAL_H_
+#endif //_LL_GENERAL_H_

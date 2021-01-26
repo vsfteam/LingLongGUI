@@ -26,7 +26,6 @@
 #include "LL_User.h"
 #include "LL_Background.h"
 #include "LL_Characters.h"
-#include "setDefine.h"
 #include "LL_Timer.h"
 
 llQueue *emitQueue;
@@ -45,7 +44,7 @@ void llInit(void)
     llConnectLink.next=&llConnectLink;
     llConnectLink.prev=&llConnectLink;
     
-    llExFlashCopy();
+    llExFlashInit();
     
     llUserInit();
     

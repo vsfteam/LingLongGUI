@@ -33,12 +33,6 @@ void llFillSingleColor(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color
 void llFillMultipleColors(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor *color);
 void llDrawLine(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
 
-void *llMalloc(uint32_t size);
-
-void llFree(void *p);
-
-void *llRealloc(void *ptr,uint32_t newSize);
-
 
 //Ë«»º³å
 void llDoubleBufferStart(void);

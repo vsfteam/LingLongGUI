@@ -22,15 +22,12 @@
 #define _LL_CONFIG_H_
 
 #include <stdlib.h>
-#include "freeRtosHeap4.h"
-#include "w25qxx.h"
+#include "flashSimulation.h"
 #include "stdbool.h"
-#include "setDefine.h"
+#include "Virtual_TFT_Port.h"
 
-extern uint8_t touchType;
+// RGB 233 565 888
 
-#define TOUCH_TYPE_GT911											0
-#define TOUCH_TYPE_NS2009											1
 
 /***********************************控件内存占用定义*********************************************/
 
@@ -50,9 +47,9 @@ extern uint8_t cfgCheckBoxTextLengthMax;
 ////颜色位数
 #define CONFIG_COLOR_DEPTH                        16 // 1 8 16 24 32
 //屏幕宽度像素
-#define CONFIG_MONITOR_WIDTH                      LCD_WIDTH
+#define CONFIG_MONITOR_WIDTH                      VT_WIDTH
 //屏幕高度像素
-#define CONFIG_MONITOR_HEIGHT                     LCD_HEIGHT
+#define CONFIG_MONITOR_HEIGHT                     VT_HEIGHT
 
 extern uint8_t cfgColorDepth;
 extern uint16_t cfgMonitorWidth;
@@ -78,8 +75,7 @@ void llFree(void *p);
 void *llRealloc(void *ptr,uint32_t newSize);
 
 //双缓冲
-#define USE_DOUBLE_BUFFERING                     1
-
+#define USE_DOUBLE_BUFFERING                     0
 
 #if USE_DOUBLE_BUFFERING == 1
 extern uint32_t *lcdFrontBuf;
@@ -96,11 +92,11 @@ void llCfgSetLcdSrcAddr(uint32_t *addr);
 
 /***********************************调试输出*********************************************/
 
-//#define LLPRINT                                   //printf
-//#define LLPRINT_NUM(str,num)                      //printf("%s:%d\n",str,num)
-//#define LLPRINT_STR(str)                          //printf("%s\n",str)
-//#define LLPRINT_POINT(str,pos)                    //printf("%s:%d,%d\n",str,pos.x,pos.y)
-//#define LLPRINT_GEOMETRY(str,geometry)            //printf("%s:%d,%d,%d,%d\n",str,geometry.x,geometry.y,geometry.width,geometry.height)
+#define LLPRINT                                   printf
+#define LLPRINT_NUM(str,num)                      printf("%s:%d\n",str,num)
+#define LLPRINT_STR(str)                          printf("%s\n",str)
+#define LLPRINT_POINT(str,pos)                    printf("%s:%d,%d\n",str,pos.x,pos.y)
+#define LLPRINT_GEOMETRY(str,geometry)            printf("%s:%d,%d,%d,%d\n",str,geometry.x,geometry.y,geometry.width,geometry.height)
 
 /***********************************屏幕驱动*********************************************/
 

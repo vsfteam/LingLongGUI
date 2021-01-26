@@ -264,55 +264,6 @@ void llDrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, llColor color)
     }
 }
 
-void *llMalloc(uint32_t size)
-{
-    return llMemMalloc(size);
-}
-
-void llFree(void *p)
-{
-    llMemFree(p);
-    p=NULL;
-}
-
-//重新分配内存(外部调用)
-//*ptr:旧内存首地址
-//newsize:要分配的内存大小(字节)
-//返回值:新分配到的内存首地址.
-void *llRealloc(void *ptr,uint32_t newSize)
-{
-    void *new_addr=NULL;
-    if(ptr)
-    {
-        if(newSize!=0)
-        {
-            new_addr=llMalloc(newSize);
-
-            if(new_addr!=NULL)
-            {
-                memcpy(new_addr,ptr,newSize);
-                llFree(ptr);
-            }
-        }
-    }
-    else
-    {
-        if(newSize!=0)
-        {
-            new_addr=llMalloc(newSize);
-        }
-    }
-    return new_addr;
-}
-
-
-
-
-
-
-
-
-
 
 
 

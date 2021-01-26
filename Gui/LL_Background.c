@@ -20,7 +20,6 @@
 
 #include "LL_Background.h"
 #include "LL_Linked_List.h"
-#include "setDefine.h"
 
 void llBackgroundAction(void *widget,uint8_t touchAction);
 

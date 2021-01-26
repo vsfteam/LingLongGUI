@@ -524,10 +524,14 @@ llGeometry llGeneralImageShow(uint32_t imageAddr,int16_t x,int16_t y)//针对16�
         totalCount=imageHeader.width*imageHeader.height;
         writePixelCount = IMAGE_READ_BYTE_MAX /( convertTypeBit[imageHeader.convertType] / 8);
 
-//        LLPRINT_GEOMETRY("geometry",geometry);
-//        LLPRINT_NUM("writePixelCount",writePixelCount);
-
-        writeHeightCount = writePixelCount / geometry.width;
+        if((geometry.width>0)&&(geometry.width>0))//0不能做除数
+        {
+            writeHeightCount = writePixelCount / geometry.width;
+        }
+        else
+        {
+            writeHeightCount = 0;
+        }
 
         i=0;
         while(i < totalCount)
@@ -750,9 +754,6 @@ void llGeneralImageSpecificAreaShow(llGeometry originGeometry,llGeometry targetG
 
     totalCount =targetGeometry.width * targetGeometry.height;
     writePixelCount = IMAGE_READ_BYTE_MAX /( convertTypeBit[imageHeader.convertType] / 8);
-
-//        LLPRINT_GEOMETRY("geometry",targetGeometry);
-//        LLPRINT_NUM("writePixelCount",writePixelCount);
 
     writeHeightCount = MIN(1, writePixelCount / targetGeometry.width);
 
