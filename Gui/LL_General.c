@@ -923,6 +923,107 @@ void llGeneralWidgetParentRecover(llGeneral *widget,llGeometry geometry)
     }
 }
 
+void llGeneralWidgetParentRecoverMove(llGeneral *widget,llGeometry oldGeometry,llGeometry newGeometry)
+{
+    llGeometry rect1,rect2={0,0,0,0},rectOverlap;
+
+    if(llRectIntersect(oldGeometry,newGeometry,&rectOverlap))
+    {
+        //共8种情况
+        if(oldGeometry.height==rectOverlap.height)
+        {
+            if(oldGeometry.x==rectOverlap.x)
+            {
+                rect1.x=rectOverlap.x+rectOverlap.width;
+                rect1.y=rectOverlap.y;
+                rect1.width=oldGeometry.width-rectOverlap.width;
+                rect1.height=oldGeometry.height;
+            }
+            else
+            {
+                rect1.x=oldGeometry.x;
+                rect1.y=oldGeometry.y;
+                rect1.width=oldGeometry.width-rectOverlap.width;
+                rect1.height=oldGeometry.height;
+            }
+        }
+        else if(oldGeometry.width==rectOverlap.width)
+        {
+            if(oldGeometry.y==rectOverlap.y)
+            {
+                rect1.x=oldGeometry.x;
+                rect1.y=rectOverlap.y+rectOverlap.height;
+                rect1.width=oldGeometry.width;
+                rect1.height=oldGeometry.height-rectOverlap.height;
+            }
+            else
+            {
+                rect1.x=oldGeometry.x;
+                rect1.y=oldGeometry.y;
+                rect1.width=oldGeometry.width;
+                rect1.height=oldGeometry.height-rectOverlap.height;
+            }
+        }
+        else if((oldGeometry.x==rectOverlap.x)&&(oldGeometry.y==rectOverlap.y))
+        {
+            rect1.x=rectOverlap.x+rectOverlap.width;
+            rect1.y=rectOverlap.y;
+            rect1.width=oldGeometry.width-rectOverlap.width;
+            rect1.height=rectOverlap.height;
+
+            rect2.x=rectOverlap.x;
+            rect2.y=rectOverlap.y+rectOverlap.height;
+            rect2.width=oldGeometry.width;
+            rect2.height=oldGeometry.height-rectOverlap.height;
+        }
+        else if((oldGeometry.x==rectOverlap.x)&&((oldGeometry.y+oldGeometry.height)==(rectOverlap.y+rectOverlap.height)))
+        {
+            rect1.x=oldGeometry.x;
+            rect1.y=oldGeometry.y;
+            rect1.width=oldGeometry.width;
+            rect1.height=oldGeometry.height-rectOverlap.height;
+
+            rect2.x=rectOverlap.x+rectOverlap.width;
+            rect2.y=rectOverlap.y;
+            rect2.width=oldGeometry.width-rectOverlap.width;
+            rect2.height=rectOverlap.height;
+        }
+        else if(((oldGeometry.x+oldGeometry.width)==(rectOverlap.x+rectOverlap.width))&&(oldGeometry.y==rectOverlap.y))
+        {
+            rect1.x=oldGeometry.x;
+            rect1.y=oldGeometry.y;
+            rect1.width=oldGeometry.width-rectOverlap.width;
+            rect1.height=rectOverlap.height;
+
+            rect2.x=oldGeometry.x;
+            rect2.y=rectOverlap.y+rectOverlap.height;
+            rect2.width=oldGeometry.width;
+            rect2.height=oldGeometry.height-rectOverlap.height;
+        }
+        else if(((oldGeometry.x+oldGeometry.width)==(rectOverlap.x+rectOverlap.width))&&((oldGeometry.y+oldGeometry.height)==(rectOverlap.y+rectOverlap.height)))
+        {
+            rect1.x=oldGeometry.x;
+            rect1.y=oldGeometry.y;
+            rect1.width=oldGeometry.width;
+            rect1.height=oldGeometry.height-rectOverlap.height;
+
+            rect2.x=oldGeometry.x;
+            rect2.y=rectOverlap.y;
+            rect2.width=oldGeometry.width-rectOverlap.width;
+            rect2.height=rectOverlap.height;
+        }
+        llGeneralWidgetParentRecover(widget,rect1);
+        if(rect2.width>0)
+        {
+            llGeneralWidgetParentRecover(widget,rect2);
+        }
+    }
+    else
+    {
+        llGeneralWidgetParentRecover(widget,oldGeometry);
+    }
+}
+
 //查找控件的所有父控件是否有隐藏，bg(show) - win(show) - win(hide) - btn(不能显示)
 bool llGeneralParentLinkHidden(llGeneral *widget)
 {

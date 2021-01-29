@@ -189,6 +189,7 @@ void* llGeneralGetWidget(uint16_t nameId, llWidgetType widgetType);
 void llGeneralWidgetSelect(llGeneral *widget);
 void llGeneralWidgetParentRecover(llGeneral *widget,llGeometry geometry);
 bool llGeneralParentLinkHidden(llGeneral *widget);
+void llGeneralWidgetParentRecoverMove(llGeneral *widget,llGeometry oldGeometry,llGeometry newGeometry);
 
 /***********************************888转换屏幕位数颜色*********************************************/
 

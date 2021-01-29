@@ -959,9 +959,13 @@ void nButtonSetBuzzerCfg(uint16_t nameId,uint8_t cfg)
 
 void pButtonMove(llButton *widget,int16_t x, int16_t y)
 {
+    llGeometry oldGeometry,newGeometry;
+    oldGeometry=widget->geometry;
     widget->isHidden=false;
     widget->geometry.x=x;
     widget->geometry.y=y;
+    newGeometry=widget->geometry;
+    llGeneralWidgetParentRecoverMove((llGeneral*)widget,oldGeometry,newGeometry);
     pButtonRefresh(widget,false);
 }
 
