@@ -73,18 +73,23 @@ extern uint16_t cfgMonitorHeight;
 
 /***********************************内存定义*********************************************/
 
-void *llMemMalloc( size_t size );
-void llMemFree( void *p );
+#define MEM_SIZE                     (32*1024)
+
+void *llMalloc(uint32_t size);
+void llFree(void *p);
+void *llRealloc(void *ptr,uint32_t newSize);
 
 //双缓冲
 #define USE_DOUBLE_BUFFERING                     1
 
 
+#if USE_DOUBLE_BUFFERING == 1
 extern uint32_t *lcdFrontBuf;
 extern uint32_t *lcdBackBuf;
 
 #define LL_LCD_BUF1_POINTER      LCD_RAM_BUFFER1
 #define LL_LCD_BUF2_POINTER      LCD_RAM_BUFFER2
+#endif
 
 void llCfgLcdCopyFront2Back(void);
 void llCfgSetLcdBufAddr(uint32_t *addr);
@@ -120,7 +125,7 @@ bool llCfgClickGetPoint(int16_t *x,int16_t *y);
 // 定时器周期性运行 llTimer_ticks(ms);
 
 /***********************************外部储存接口*********************************************/
-void llExFlashCopy(void);
+void llExFlashInit(void);
 void llReadExFlash(uint32_t addr,uint8_t* pBuffer,uint16_t length);
 
 /***********************************蜂鸣器接口*********************************************/

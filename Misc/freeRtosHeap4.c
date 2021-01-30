@@ -85,9 +85,12 @@ task.h is included from an application file. */
 //#include "FreeRTOS.h"
 //#include "task.h"
 #include "freeRtosHeap4.h"
+#include "stdio.h"
+#include "LL_Config.h"
+
 
 #define configSUPPORT_DYNAMIC_ALLOCATION            (1)
-#define configTOTAL_HEAP_SIZE                       ((size_t)(32*1024))
+#define configTOTAL_HEAP_SIZE                       ((size_t)MEM_SIZE)
 #define portBYTE_ALIGNMENT                          (8)
 #define portBYTE_ALIGNMENT_MASK                     ( 0x0007 )
 

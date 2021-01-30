@@ -343,9 +343,11 @@ void llHandlerGUIProcess(void)
 
 }
 
+
+
 void llHandler(void)
 {
-llListWidgetInfo *tempInfo;
+    llListWidgetInfo *tempInfo;
     
     llHandlerClickedProcess();
 
@@ -354,10 +356,9 @@ llListWidgetInfo *tempInfo;
 
     if( llTimer_timeOut(&llSysTimer,SYS_TIME_OUT_MS,true))
     {
-            tempInfo = list_entry(&llWidgetLink.next, llListWidgetInfo, parent_link_pos);
+        tempInfo = list_entry((&llWidgetLink)->next, llListWidgetInfo, parent_link_pos);
 
-            llEmitSignal(tempInfo->widget,SIGNAL_SYS_TIME_OUT);
-        
+        llEmitSignal(tempInfo->widget,SIGNAL_SYS_TIME_OUT);
     }
     
     llDoubleBufferRefresh();

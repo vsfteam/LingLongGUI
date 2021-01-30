@@ -5,10 +5,6 @@
 extern "C" {
 #endif
 
-#include "stdio.h"
-#include "LL_Config.h"
-
-
 void *pvPortMalloc( size_t xWantedSize );
 void vPortFree( void *pv );
 

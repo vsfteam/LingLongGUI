@@ -73,6 +73,8 @@ extern uint16_t cfgMonitorHeight;
 
 /***********************************内存定义*********************************************/
 
+#define MEM_SIZE                     (32*1024)
+
 void *llMalloc(uint32_t size);
 void llFree(void *p);
 void *llRealloc(void *ptr,uint32_t newSize);
