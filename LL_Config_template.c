@@ -37,28 +37,28 @@ uint32_t *lcdBackBuf=LL_LCD_BUF2_POINTER;
 
 void llCfgSetLcdBufAddr(uint32_t *addr)
 {
-    #if USE_DOUBLE_BUFFERING == 1
+#if USE_DOUBLE_BUFFERING == 1
     lcdSetBufferAddr(addr);
-    #endif
+#endif
 }
 
 void llCfgSetLcdSrcAddr(uint32_t *addr)
 {
-    #if USE_DOUBLE_BUFFERING == 1
+#if USE_DOUBLE_BUFFERING == 1
     lcdSetSrcAddr(addr);
-    #endif
+#endif
 }
 
 void llCfgLcdCopyFront2Back(void)
 {
-    #if USE_DOUBLE_BUFFERING == 1
+#if USE_DOUBLE_BUFFERING == 1
 //    memcpy(lcdBackBuf,lcdFrontBuf,SDRAM_LCD_SIZE);
     uint64_t i;
     for(i=0;i<SDRAM_LCD_SIZE;i++)
     {
         lcdBackBuf[i]=lcdFrontBuf[i];
     }
-    #endif
+#endif
 }
 
 bool llCfgClickGetPoint(int16_t *x,int16_t *y)
@@ -74,7 +74,7 @@ void llCfgSetPoint(int16_t x,int16_t y,llColor color)
 llColor llCfgGetPoint(int16_t x,int16_t y)
 {
     llColor retColor;
-    return ret;
+    return retColor;
 }
 
 void llCfgFillSingleColor(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color)

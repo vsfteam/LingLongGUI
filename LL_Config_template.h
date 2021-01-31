@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2021 Ou Jianbo 59935554@qq.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,18 +23,12 @@
 
 #include <stdlib.h>
 #include "freeRtosHeap4.h"
-#include "w25qxx.h"
 #include "stdbool.h"
-#include "setDefine.h"
-
-extern uint8_t touchType;
-
-#define TOUCH_TYPE_GT911											0
-#define TOUCH_TYPE_NS2009											1
+#include "stdint.h"
 
 /***********************************控件内存占用定义*********************************************/
 
-#define LLFONT_NAME_LENGTH_MAX                    48 //byte (修改无效)字体名称长度最大值
+#define LLFONT_NAME_LENGTH_MAX                    48 //byte 字体名称长度最大值
 
 #define LLBUTTON_TEXT_LENGTH_MAX                  16 //byte button显示文本最大值
 
@@ -50,9 +44,9 @@ extern uint8_t cfgCheckBoxTextLengthMax;
 ////颜色位数
 #define CONFIG_COLOR_DEPTH                        16 // 1 8 16 24 32
 //屏幕宽度像素
-#define CONFIG_MONITOR_WIDTH                      LCD_WIDTH
+#define CONFIG_MONITOR_WIDTH                      320
 //屏幕高度像素
-#define CONFIG_MONITOR_HEIGHT                     LCD_HEIGHT
+#define CONFIG_MONITOR_HEIGHT                     240
 
 extern uint8_t cfgColorDepth;
 extern uint16_t cfgMonitorWidth;
@@ -73,14 +67,14 @@ extern uint16_t cfgMonitorHeight;
 
 /***********************************内存定义*********************************************/
 
-#define MEM_SIZE                     (32*1024)
+#define MEM_SIZE                     (12*1024)
 
 void *llMalloc(uint32_t size);
 void llFree(void *p);
 void *llRealloc(void *ptr,uint32_t newSize);
 
 //双缓冲
-#define USE_DOUBLE_BUFFERING                     1
+#define USE_DOUBLE_BUFFERING                     0
 
 
 #if USE_DOUBLE_BUFFERING == 1
@@ -115,8 +109,6 @@ void llCfgDrawLine(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
 
 /***********************************触摸驱动*********************************************/
 bool llCfgClickGetPoint(int16_t *x,int16_t *y);
-
-
 
 /***********************************定时器*********************************************/
 
