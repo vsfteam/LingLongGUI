@@ -129,16 +129,16 @@ void nGraphRefresh(uint16_t nameId)
 
 llGraph *llGraphCreate(uint16_t nameId, uint16_t parentNameId , int16_t x, int16_t y , int16_t width, int16_t height,uint16_t pointSize,bool isHidden)
 {
-    llGraph * pNewWidget;
+    llGraph * pNewWidget = NULL;
     llPoint * pNewPointBuff;
     llListWidgetInfo *parentInfo;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llGraph);
-    pNewPointBuff = llMalloc(sizeof (llPoint)*pointSize);
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+    pNewWidget = LL_MALLOC_WIDGET_INFO(llGraph);
+    pNewPointBuff = llMalloc(sizeof (llPoint)*pointSize);
+
         if((pNewWidget!=NULL)&&(pNewPointBuff!=NULL))
         {
             pNewWidget->nameId=nameId;

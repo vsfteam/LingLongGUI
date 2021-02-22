@@ -59,11 +59,17 @@ void llDoubleBufferStart(void)
 #endif
 }
 
-void llDoubleBufferEnd(void)
+void llDoubleBufferEnd(bool isRefreshNow)
 {
 #if USE_DOUBLE_BUFFERING == 1
     // 切换地址 front
     llCfgSetLcdBufAddr(lcdFrontBuf);
+    if(isRefreshNow)
+    {
+        isDoubleBufferWaitExchangeRefresh=true;
+//        while(isDoubleBufferWaitExchangeRefresh);
+        llDoubleBufferClear();
+    }
 #endif
 }
 

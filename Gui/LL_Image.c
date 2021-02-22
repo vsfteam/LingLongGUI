@@ -31,15 +31,13 @@ void nImageDelete(uint16_t nameId);
 //自动根据图片大小更新尺寸数据
 llImage *llImageCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x,uint16_t y,uint32_t imageAddr,bool isHidden)
 {
-    llImage * pNewWidget;
-//    uint32_t pathLength=0;
+    llImage * pNewWidget = NULL;
     llListWidgetInfo *parentInfo;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llImage);
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llImage);
         if(pNewWidget!=NULL)
         {
             pNewWidget->nameId=nameId;
@@ -128,7 +126,7 @@ bool pImageLoad(llImage *widget, uint32_t imageAddr)
 
         llDoubleBufferStart();
         newGeometry=llGeneralImageShow(widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
-        llDoubleBufferEnd();
+        llDoubleBufferEnd(true);
         
         widget->geometry.width=newGeometry.width;
         widget->geometry.height=newGeometry.height;

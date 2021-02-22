@@ -21,7 +21,7 @@
 #include "LL_Background.h"
 #include "LL_Linked_List.h"
 
-void llBackgroundAction(void *widget,uint8_t touchAction);
+void llBackgroundAction(void *widget,uint8_t touchSignal);
 
 llBackground *llBackgroundQuickCreate(uint16_t nameId,int16_t width,int16_t height,bool isColor,llColor color,uint32_t imageAddr)
 {
@@ -61,7 +61,9 @@ llBackground *llBackgroundQuickCreate(uint16_t nameId,int16_t width,int16_t heig
         }
         else
         {
+            llDoubleBufferStart();
             llGeneralImageShow(pNewWidget->imageAddr,pNewWidget->geometry.x,pNewWidget->geometry.y);
+            llDoubleBufferEnd(true);
         }
         //add linked list
         llListWidgetAdd(&llWidgetLink,pNewWidget);
@@ -80,7 +82,7 @@ llBackground *llBackgroundCreate(uint16_t nameId)
     return llBackgroundQuickCreate(nameId,CONFIG_MONITOR_WIDTH,CONFIG_MONITOR_HEIGHT,true,RGB_CONVERT(240,240,240),0);
 }
 
-void llBackgroundAction(void *widget,uint8_t touchAction)
+void llBackgroundAction(void *widget,uint8_t touchSignal)
 {
 
 }
@@ -167,7 +169,9 @@ void pBackgroundSetImage(llBackground *widget,uint32_t imageAddr)
 {
     widget->isColor=false;
     widget->imageAddr=imageAddr;
+    llDoubleBufferStart();  
     llGeneralImageShow(widget->imageAddr,widget->geometry.x,widget->geometry.y);
+    llDoubleBufferEnd(true);
 }
 
 void nBackgroundSetImage(uint16_t nameId,uint32_t imageAddr)

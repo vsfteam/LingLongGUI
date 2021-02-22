@@ -22,7 +22,7 @@
 #include "LL_Linked_List.h"
 #include "LL_Background.h"
 
-void llWindowAction(void *widget,uint8_t touchAction);
+void llWindowAction(void *widget,uint8_t touchSignal);
 void pWindowSetHiden(llWindow *widget, bool state);
 void nWindowRefresh(uint16_t nameId);
 void pWindowRefresh(llWindow *widget);
@@ -33,13 +33,13 @@ llWindow *llWindowQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x,
                                 llColor bgColor,
                                 bool isTransparent,bool isHidden)
 {
-    llWindow * pNewWidget;
+    llWindow * pNewWidget = NULL;
     llListWidgetInfo *parentInfo;
 
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llWindow);
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llWindow);
         if(pNewWidget!=NULL)
         {
             pNewWidget->nameId=nameId;
@@ -108,7 +108,7 @@ void nWindowSetColor(uint16_t nameId,llColor color)
     }
 }
 
-void llWindowAction(void *widget,uint8_t touchAction)
+void llWindowAction(void *widget,uint8_t touchSignal)
 {
 
 }

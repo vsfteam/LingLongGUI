@@ -194,9 +194,9 @@ bool pGaugeLoad(llGauge *widget, uint32_t imageAddr)
     if(widget->isEnable)
     {
         globalPos=llListGetGlobalPos(widget->parentWidget);
-
+        llDoubleBufferStart();
         newGeometry=llGeneralImageShow(widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
-
+        llDoubleBufferEnd(true);
         widget->geometry.width=newGeometry.width;
         widget->geometry.height=newGeometry.height;
         return true;
@@ -210,13 +210,16 @@ bool pGaugeLoad(llGauge *widget, uint32_t imageAddr)
 //自动根据图片大小更新尺寸数据
 llGauge *llGaugeCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x,uint16_t y,uint32_t imageAddr,bool isColor,llColor backgroundColor,int16_t originalPointX,int16_t originalPointY,int16_t originalPointerDistance,uint16_t pointerLength,uint8_t pointerWidth1,uint8_t pointerWidth2,llColor pointerColor,bool isHidden)
 {
-    llGauge * pNewWidget;
-    llPoint * pPointBackup;
-    llPointColor *pPointColorBackup1,*pPointColorBackup2;
+    llGauge * pNewWidget = NULL;
+    llPoint * pPointBackup = NULL;
+    llPointColor *pPointColorBackup1 = NULL,*pPointColorBackup2 = NULL;
     uint32_t pointBufferSize=0;
     llListWidgetInfo *parentInfo;
     uint8_t widthTemp;
 
+    //检查父链表存在
+    if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
+    {
     pNewWidget = LL_MALLOC_WIDGET_INFO(llGauge);
 
     widthTemp=(pointerWidth1>=pointerWidth2)?pointerWidth1:pointerWidth2;
@@ -228,9 +231,7 @@ llGauge *llGaugeCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x,uint16
     pPointColorBackup1=(llPointColor*)llMalloc(widthTemp*pointerLength*1.7*sizeof (llPointColor));
     pPointColorBackup2=(llPointColor*)llMalloc(widthTemp*pointerLength*1.7*sizeof (llPointColor));
 
-    //检查父链表存在
-    if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
-    {
+
         if((pNewWidget!=NULL)&&(pPointBackup!=NULL)&&(pPointColorBackup1!=NULL)&&(pPointColorBackup2!=NULL))
         {
             pNewWidget->nameId=nameId;

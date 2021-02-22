@@ -184,16 +184,17 @@ llText *llTextQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int
                           int16_t moveHorizontal,int16_t moveVertical,
                           bool isAutoLineBreak,bool isTransparent,bool isHidden)
 {
-    llText * pNewWidget;
-    uint8_t *pText;
+    llText * pNewWidget = NULL;
+    uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
 
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llText);
-    pText=LL_MALLOC_STRING(text);
+
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llText);
+        pText=LL_MALLOC_STRING(text);
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;

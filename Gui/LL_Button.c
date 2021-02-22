@@ -436,18 +436,16 @@ llButton *llButtonQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                             llColor bgReleasedColor,llColor bgRressedColor,uint32_t bgReleasedImageAddr,uint32_t bgPressedImageAddr,
                             uint8_t disType,bool isHidden)
 {
-    llButton * pNewWidget;
-    uint8_t *pText;
+    llButton * pNewWidget = NULL;
+    uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
     uint32_t textLength=0;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llButton);
-    pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
-
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llButton);
+        pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;

@@ -36,8 +36,10 @@ typedef struct
     llColor foregroundColor;
     llColor cursorColor;
     uint32_t bgImgAddr;
+    uint32_t fgImgAddr;
     uint32_t curImgAddr;
     llGeometry bgImgGeometry;
+    llGeometry fgImgGeometry;
     llGeometry curImgGeometry;
     uint16_t movePos;
     uint8_t cursorWidth;
@@ -45,7 +47,8 @@ typedef struct
 }llSlider;
 
 llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, int16_t y ,int16_t width, int16_t height,
-                            llColor bgColor,llColor fgColor,llColor cursorColor,uint32_t bgImgAddr,uint32_t cursorImgAddr,
+                              llColor bgColor,llColor fgColor,llColor cursorColor,
+                              uint32_t bgImgAddr,uint32_t fgImgAddr,uint32_t cursorImgAddr,
                             bool isColor,bool isHorizontal,bool isHidden);
 llSlider *llSliderCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, int16_t y ,int16_t width, int16_t height,bool isHorizontal,bool isHidden);
 uint8_t pSliderGetPercent(llSlider* widget);

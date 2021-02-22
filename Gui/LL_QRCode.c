@@ -52,9 +52,9 @@ void nQRCodeDelete(uint16_t nameId)
     {
         widget=linkInfo->widget;
 
-        //²éÕÒ¸¸Á´±í
+        //ï¿½ï¿½ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½
         llList_GetInfoByName(&parentInfo,((llGeneral*)widget->parentWidget)->nameId);
-        //Ïû³ý×ÔÉíÔÚ¸¸Á´±íÖÐµÄÎ»ÖÃÊý¾Ý
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         list_for_each_prev_safe(tempPos,safePos, &parentInfo->child_link)
         {
             tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);
@@ -141,16 +141,15 @@ llQRCode *llQRCodeQuickCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x
                                 uint8_t qrEcc,uint8_t qrMask,uint8_t qrMaxVersion,uint8_t qrZoom,
                                 bool isHidden)
 {
-    llQRCode * pNewWidget;
-    uint8_t *pText;
+    llQRCode * pNewWidget = NULL;
+    uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
 
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llQRCode);
-    pText=LL_MALLOC_STRING(qrText);
-
-    //¼ì²é¸¸Á´±í´æÔÚ
+    //ï¿½ï¿½é¸¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llQRCode);
+        pText=LL_MALLOC_STRING(qrText);
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;

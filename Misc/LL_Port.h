@@ -37,7 +37,7 @@ void llDrawLine(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
 //Ë«»º³å
 void llDoubleBufferStart(void);
 
-void llDoubleBufferEnd(void);
+void llDoubleBufferEnd(bool isRefreshNow);
 
 void llDoubleBufferClear(void);
 

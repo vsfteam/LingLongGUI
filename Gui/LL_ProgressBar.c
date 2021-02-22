@@ -41,32 +41,32 @@ void pProgressBarRefresh(llProgressBar *widget)
 
             if(widget->isMicroRefresh==false)
             {
-                //±³¾°É«
+                //ï¿½ï¿½ï¿½ï¿½É«
                 llFillSingleColor(x,y,x+width-1,y+height-1,widget->backgroundColor);
             }
 
-            //¼ÆËã²îÖµ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
             u16Temp=width*widget->percent/100.0;
-            if(widget->percentWidth<u16Temp)//ÐÂÖµ´óÓÚ¾ÉÖµ
+            if(widget->percentWidth<u16Temp)//ï¿½ï¿½Öµï¿½ï¿½ï¿½Ú¾ï¿½Öµ
             {
                 llFillSingleColor(x+widget->percentWidth,y,x+u16Temp,y+height-1,widget->progressColor);
             }
             else
             {
-                if(widget->percentWidth>u16Temp)//ÐÂÖµÐ¡ÓÚ¾ÉÖµ
+                if(widget->percentWidth>u16Temp)//ï¿½ï¿½ÖµÐ¡ï¿½Ú¾ï¿½Öµ
                 {
                     llFillSingleColor(x+u16Temp,y,x+widget->percentWidth,y+height-1,widget->backgroundColor);
                 }
             }
             widget->percentWidth=u16Temp;
 
-            //»­±ß
+            //ï¿½ï¿½ï¿½ï¿½
             llFillSingleColor(x,y,x,y+height-1,RGB_CONVERT(188,188,188));
             llFillSingleColor(x,y,x+width-1,y,RGB_CONVERT(188,188,188));
             llFillSingleColor(x+width-1,y,x+width-1,y+height-1,RGB_CONVERT(188,188,188));
             llFillSingleColor(x,y+height-1,x+width-1,y+height-1,RGB_CONVERT(188,188,188));
 
-            //¸üÐÂÎÄ×Ö×ø±ê
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             widget->textInfo.geometry.x=globalPos.x+widget->geometry.x+widget->geometry.width-widget->textInfo.fontLibInfo->fontSize*4;
             widget->textInfo.geometry.y=globalPos.y+widget->geometry.y;
 
@@ -108,9 +108,9 @@ void nProgressBarDelete(uint16_t nameId)
     {
         widget=linkInfo->widget;
 
-        //²éÕÒ¸¸Á´±í
+        //ï¿½ï¿½ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½
         llList_GetInfoByName(&parentInfo,((llGeneral*)widget->parentWidget)->nameId);
-        //Ïû³ý×ÔÉíÔÚ¸¸Á´±íÖÐµÄÎ»ÖÃÊý¾Ý
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         list_for_each_prev_safe(tempPos, safePos,&parentInfo->child_link)
         {
             tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);
@@ -133,17 +133,16 @@ llProgressBar *llProgressBarQuickCreate(uint16_t nameId, uint16_t parentNameId, 
                                         llFontLib *fontLib,llColor textColor,llColor bgColor,llColor progressColor,
                                         uint8_t percent,bool isHidden)
 {
-    llProgressBar * pNewWidget;
+    llProgressBar * pNewWidget = NULL;
     llListWidgetInfo *parentInfo;
-    uint8_t *pText;
+    uint8_t *pText = NULL;
 
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llProgressBar);
-
-    pText=(uint8_t *)llMalloc(5*sizeof(uint8_t));
-
-    //¼ì²é¸¸Á´±í´æÔÚ
+    //ï¿½ï¿½é¸¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+    pNewWidget = LL_MALLOC_WIDGET_INFO(llProgressBar);
+    pText=(uint8_t *)llMalloc(5*sizeof(uint8_t));
+
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;
@@ -188,12 +187,12 @@ llProgressBar *llProgressBarQuickCreate(uint16_t nameId, uint16_t parentNameId, 
 
             llI32ToStr(pNewWidget->percent,pText);
             strcat((char*)pText,"%");
-//            sprintf((char*)pText, "%d%%", pNewWidget->percent);
 
             pProgressBarRefresh(pNewWidget);
         }
         else
         {
+            llFree(pText);
             llFree(pNewWidget);
         }
     }
@@ -277,7 +276,7 @@ void pProgressBarSetHidden(llProgressBar *widget,bool isHidden)
         {
             if(isHidden==false)
             {
-                //±äÎªÒþ²Ø
+                //ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½
                 llGeneralWidgetParentRecover((llGeneral*)widget,widget->geometry);
             }
         }
@@ -285,7 +284,7 @@ void pProgressBarSetHidden(llProgressBar *widget,bool isHidden)
         {
             if(isHidden==true)
             {
-                //±äÎªÏÔÊ¾
+                //ï¿½ï¿½Îªï¿½ï¿½Ê¾
                 pProgressBarRefresh(widget);
             }
         }

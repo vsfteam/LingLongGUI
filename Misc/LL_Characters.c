@@ -20,7 +20,6 @@
 
 #include "LL_Characters.h"
 #include "LL_Timer.h"
-#include "LL_General.h"
 #include "LL_Handler.h"
 
 //单字显示

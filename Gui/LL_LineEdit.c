@@ -215,17 +215,17 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
                                 llFontLib *keyboardFontLib,
                                 bool isHidden)
 {
-    llLineEdit * pNewWidget;
-    uint8_t *pText;
+    llLineEdit * pNewWidget = NULL;
+    uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
     uint32_t textLength=0;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llLineEdit);
-    pText=(uint8_t*)llMalloc(sizeof (uint8_t)*cfgLineEditTextLengthMax);
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+    pNewWidget = LL_MALLOC_WIDGET_INFO(llLineEdit);
+    pText=(uint8_t*)llMalloc(sizeof (uint8_t)*cfgLineEditTextLengthMax);
+
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             memset(pText,0,cfgLineEditTextLengthMax);

@@ -177,17 +177,16 @@ llDateTime *llDateTimeQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
                                   llFontLib *fontLib,llColor textColor,llColor bgColor,
                                   llHorizontalAlign hAlign,llVerticalAlign vAlign,bool isTransparent,bool isHidden)
 {
-    llDateTime * pNewWidget;
-    uint8_t *pDateTimeFormat,*pText;
+    llDateTime * pNewWidget = NULL;
+    uint8_t *pDateTimeFormat = NULL,*pText = NULL;
     llListWidgetInfo *parentInfo;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llDateTime);
-    pText=LL_MALLOC_STRING(dateTimeFormat);
-    pDateTimeFormat=LL_MALLOC_STRING(dateTimeFormat);
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+    pNewWidget = LL_MALLOC_WIDGET_INFO(llDateTime);
+    pText=LL_MALLOC_STRING(dateTimeFormat);
+    pDateTimeFormat=LL_MALLOC_STRING(dateTimeFormat);
         if((pNewWidget!=NULL)&&(pText!=NULL)&&(pDateTimeFormat!=NULL))
         {
             pNewWidget->nameId=nameId;

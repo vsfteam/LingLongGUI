@@ -187,18 +187,16 @@ llCheckBox *llCheckBoxQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t 
                                 uint8_t *text,llFontLib *fontLib,llColor textColor,
                                 bool isChecked,bool isHidden)
 {
-    llCheckBox * pNewWidget;
-    uint8_t *pText;
+    llCheckBox * pNewWidget = NULL;
+    uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
     uint32_t textLength=0;
-
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llCheckBox);
-    pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
-
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llCheckBox);
+        pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;

@@ -73,7 +73,8 @@ typedef enum{
     widgetTypeProgressBar,
     widgetTypeGauge,
     widgetTypeQRCode,
-    widgetTypeDateTime
+    widgetTypeDateTime,
+    widgetTypeWindowSlider
 }llWidgetType;
 
 #define LLGENERAL_ATTRIBUTES  llWidgetType widgetType; \
@@ -114,6 +115,20 @@ typedef struct{
     int16_t width;
     int16_t height;
 }llSize;
+
+typedef enum
+{
+    llAlignHLeft,
+    llAlignHCenter,
+    llAlignHRight
+}llHorizontalAlign;
+
+typedef enum
+{
+    llAlignVTop,
+    llAlignVCenter,
+    llAlignVBottom
+}llVerticalAlign;
 
 typedef enum
 {

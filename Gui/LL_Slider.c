@@ -62,23 +62,20 @@ void pSliderRefresh(llSlider *widget)
                     newCurGeometry=curGeometry;
                     newCurGeometry.x=pos.x+offset;
 
-                    if(curGeometry.x!=newCurGeometry.x)
-                    {
-                        if(llRectIntersect(curGeometry,newCurGeometry,&recoveryGeometry))
-                        {
                             if(curGeometry.x<newCurGeometry.x)//恢复左侧
                             {
                                 curGeometry.width=newCurGeometry.x-curGeometry.x;
+                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->fgImgAddr);
                             }
                             else
                             {
+                        if(curGeometry.x>newCurGeometry.x)//恢复右侧
+                        {
                                 curGeometry.width=curGeometry.x-newCurGeometry.x;
                                 curGeometry.x=newCurGeometry.x+newCurGeometry.width;
+                            llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
                             }
                         }
-                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
-                    }
-
                     //显示游标图片
                     llGeneralImageShow(widget->curImgAddr,pos.x+offset,pos.y);
 
@@ -108,22 +105,20 @@ void pSliderRefresh(llSlider *widget)
                     newCurGeometry=curGeometry;
                     newCurGeometry.y=pos.y+offset;
 
-                    if(curGeometry.y!=newCurGeometry.y)
-                    {
-                        if(llRectIntersect(curGeometry,newCurGeometry,&recoveryGeometry))
-                        {
                             if(curGeometry.y<newCurGeometry.y)//恢复上方
                             {
                                 curGeometry.height=newCurGeometry.y-curGeometry.y;
+                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
                             }
                             else
                             {
+                        if(curGeometry.y>newCurGeometry.y)//恢复下方
+                        {
                                 curGeometry.height=curGeometry.y-newCurGeometry.y;
                                 curGeometry.y=newCurGeometry.y+newCurGeometry.height;
+                            llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->fgImgAddr);
                             }
                         }
-                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
-                    }
                     //显示游标图片
                     llGeneralImageShow(widget->curImgAddr,pos.x,pos.y+offset);
                     widget->curImgGeometry.y=offset;
@@ -286,26 +281,26 @@ bool slotSliderMove(llConnectInfo info)
 }
 
 llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, int16_t y,int16_t width, int16_t height,
-                              llColor bgColor,llColor fgColor,llColor cursorColor,uint32_t bgImgAddr,uint32_t cursorImgAddr,
+                              llColor bgColor,llColor fgColor,llColor cursorColor,
+                              uint32_t bgImgAddr,uint32_t fgImgAddr,uint32_t cursorImgAddr,
                               bool isColor,bool isHorizontal,bool isHidden)
 {
-    llSlider * pNewWidget;
+    llSlider * pNewWidget = NULL;
     llListWidgetInfo *parentInfo;
-    llSize curSize,bgSize;
+    llSize curSize,bgSize,fgSize;
     llPoint globalPos;
     llPoint pos;
 
     bool isRecvBufOk=true;
 
+    //检查父链表存在
+    if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
+    {
     pNewWidget = LL_MALLOC_WIDGET_INFO(llSlider);
     if(!isColor)
     {
         isRecvBufOk=false;
     }
-
-    //检查父链表存在
-    if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
-    {
         if(pNewWidget!=NULL)
         {
             pNewWidget->nameId=nameId;
@@ -331,6 +326,7 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
             pNewWidget->cursorWidth=12;
 
             pNewWidget->bgImgAddr=bgImgAddr;
+            pNewWidget->fgImgAddr=fgImgAddr;
             pNewWidget->curImgAddr=cursorImgAddr;
 
             if(!isColor)
@@ -340,6 +336,7 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                 pos.x=globalPos.x+pNewWidget->geometry.x;
                 pos.y=globalPos.y+pNewWidget->geometry.y;
                 bgSize=llGeneralGetImageSize(bgImgAddr);
+                fgSize=llGeneralGetImageSize(fgImgAddr);
                 curSize=llGeneralGetImageSize(cursorImgAddr);
                 if(isHorizontal)
                 {
@@ -353,6 +350,11 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                     pNewWidget->bgImgGeometry.y=RECTANGLE_MID_Y_POS(0,bgSize.height,bgSize.height);
                     pNewWidget->bgImgGeometry.width=bgSize.width;
                     pNewWidget->bgImgGeometry.height=bgSize.height;
+
+                    pNewWidget->fgImgGeometry.x=0;
+                    pNewWidget->fgImgGeometry.y=RECTANGLE_MID_Y_POS(0,fgSize.height,fgSize.height);
+                    pNewWidget->fgImgGeometry.width=fgSize.width;
+                    pNewWidget->fgImgGeometry.height=fgSize.height;
 
                     pNewWidget->curImgGeometry.x=0;
                     pNewWidget->curImgGeometry.y=RECTANGLE_MID_Y_POS(0,curSize.height,curSize.height);
@@ -376,6 +378,11 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                     pNewWidget->bgImgGeometry.y=0;
                     pNewWidget->bgImgGeometry.width=bgSize.width;
                     pNewWidget->bgImgGeometry.height=bgSize.height;
+
+                    pNewWidget->fgImgGeometry.x=RECTANGLE_MID_X_POS(0,fgSize.width,fgSize.width);
+                    pNewWidget->fgImgGeometry.y=0;
+                    pNewWidget->fgImgGeometry.width=fgSize.width;
+                    pNewWidget->fgImgGeometry.height=fgSize.height;
 
                     pNewWidget->curImgGeometry.x=RECTANGLE_MID_Y_POS(0,curSize.width,curSize.width);
                     pNewWidget->curImgGeometry.y=0;
@@ -406,6 +413,9 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
             pNewWidget->actionFunc=llSliderAction;
             pNewWidget->refreshFunc=nSliderRefresh;
             pSliderRefresh(pNewWidget);
+
+            //动作
+            llConnectSignal(nameId,SIGNAL_CLICK_HOLD_MOVE,nameId,slotSliderMove);
         }
         else
         {
@@ -413,15 +423,14 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
         }
     }
 
-    //动作
-    llConnectSignal(nameId,SIGNAL_CLICK_HOLD_MOVE,nameId,slotSliderMove);
+
 
     return pNewWidget;
 }
 
 llSlider *llSliderCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, int16_t y,int16_t width, int16_t height,bool isHorizontal,bool isHidden)
 {
-    return llSliderQuickCreate(nameId,parentNameId,x,y,width,height,RGB888(0xBCBCBC),RGB888(0x2E90DD),RGB888(0xFFFFFF),0,0,true,isHorizontal,isHidden);
+    return llSliderQuickCreate(nameId,parentNameId,x,y,width,height,RGB888(0xBCBCBC),RGB888(0x2E90DD),RGB888(0xFFFFFF),0,0,0,true,isHorizontal,isHidden);
 }
 
 uint8_t pSliderGetClickPercent(llSlider* widget)

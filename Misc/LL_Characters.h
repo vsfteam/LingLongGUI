@@ -27,20 +27,7 @@ extern "C" {
 
 #include "LL_User.h"
 #include "LL_Font.h"
-
-typedef enum
-{
-    llAlignHLeft,
-    llAlignHCenter,
-    llAlignHRight
-}llHorizontalAlign;
-
-typedef enum
-{
-    llAlignVTop,
-    llAlignVCenter,
-    llAlignVBottom
-}llVerticalAlign;
+#include "LL_General.h"
 
 typedef struct
 {
