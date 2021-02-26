@@ -190,6 +190,9 @@ void llFillSingleColor(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color
 
 void llFillMultipleColors(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor *color)
 {
+#if USE_USER_FILL_MULTIPLE_COLORS == 1
+    llCfgFillMultipleColors(x0,y0,x1,y1,color);
+#else
     uint16_t height,width;
     uint16_t i,j;
     width=x1-x0+1;
@@ -201,6 +204,7 @@ void llFillMultipleColors(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor *c
             llSetPoint(x0+j,y0+i,color[i*width+j]);
         }
     }
+#endif
 }
 
 void llDrawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, llColor color)

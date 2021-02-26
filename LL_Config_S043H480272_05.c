@@ -113,6 +113,36 @@ void llCfgFillSingleColor(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor co
     lcdFill(x0,y0,x1,y1,color);
 }
 
+#if USE_USER_FILL_MULTIPLE_COLORS == 1
+void llCfgFillMultipleColors(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor *color)
+{
+    uint16_t height,width;
+    uint16_t i,j,n;
+    width=x1-x0+1;
+    height=y1-y0+1;
+    for(i=0; i<height; i++)
+    {
+        j=0;
+        if(x0%2)
+        {
+            llSetPoint(x0+j,y0+i,color[i*width+j]);
+            j++;
+        }
+        n=(width-j)/2;
+        while(n>0)
+        {
+            lcdSetMultiPoint(x0+j,y0+i,&color[i*width+j]);
+            j+=2;
+            n--;
+        }
+        n=(width-j)%2;
+        if(n>0)
+        {
+            llSetPoint(x0+j,y0+i,color[i*width+j]);
+        }
+    }
+}
+#endif
 
 void *llMalloc(uint32_t size)
 {

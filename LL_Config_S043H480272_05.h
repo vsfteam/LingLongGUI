@@ -106,12 +106,15 @@ void llCfgSetLcdSrcAddr(uint32_t *addr);
 
 /***********************************屏幕驱动*********************************************/
 
+#define USE_USER_FILL_MULTIPLE_COLORS               1
 //左上角为0,0
 void llCfgSetPoint(int16_t x,int16_t y,llColor color);
 llColor llCfgGetPoint(int16_t x,int16_t y);
 void llCfgFillSingleColor(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
+#if USE_USER_FILL_MULTIPLE_COLORS == 1
 void llCfgFillMultipleColors(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor *color);
-void llCfgDrawLine(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
+#endif
+//void llCfgDrawLine(int16_t x0,int16_t y0,int16_t x1,int16_t y1,llColor color);
 
 /***********************************触摸驱动*********************************************/
 bool llCfgClickGetPoint(int16_t *x,int16_t *y);
