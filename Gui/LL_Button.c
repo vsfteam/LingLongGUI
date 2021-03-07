@@ -195,7 +195,7 @@ void pButtonShow(llButton *widget)
     {
         if(widget->isPressed)
         {
-            llGeneralImageShow(widget->pressedImageAddr,x,y);
+            llGeneralImageShow((llGeneral*)widget,widget->pressedImageAddr,x,y);
             if(widget->isSelected)//被选中
             {
                 llGeneralWidgetSelect((llGeneral*)widget);
@@ -203,7 +203,7 @@ void pButtonShow(llButton *widget)
         }
         else
         {
-            llGeneralImageShow(widget->releasedImageAddr,x,y);
+            llGeneralImageShow((llGeneral*)widget,widget->releasedImageAddr,x,y);
             if(widget->isSelected)//被选中
             {
                 llGeneralWidgetSelect((llGeneral*)widget);

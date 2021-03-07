@@ -496,8 +496,8 @@ void pWindowSliderRefresh(llWindowSlider *widget)
             page=i/(widget->rowCount*widget->columnCount);
 
             //窗口内坐标
-            x=(i%widget->rowCount)*widget->itemWidth;
-            y=(i/widget->rowCount)*widget->itemHeight;
+            x=(i%widget->columnCount)*widget->itemWidth;
+            y=(i/widget->columnCount)*widget->itemHeight;
 
             if(widget->isPageMove)
             {

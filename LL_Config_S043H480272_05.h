@@ -95,6 +95,8 @@ void llCfgLcdCopyFront2Back(void);
 void llCfgSetLcdBufAddr(uint32_t *addr);
 void llCfgSetLcdSrcAddr(uint32_t *addr);
 
+//图片显示的缓冲大小
+#define IMAGE_READ_BYTE_MAX      1024
 
 /***********************************调试输出*********************************************/
 

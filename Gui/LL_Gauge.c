@@ -195,7 +195,7 @@ bool pGaugeLoad(llGauge *widget, uint32_t imageAddr)
     {
         globalPos=llListGetGlobalPos(widget->parentWidget);
         llDoubleBufferStart();
-        newGeometry=llGeneralImageShow(widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
+        newGeometry=llGeneralImageShow((llGeneral*)widget,widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
         llDoubleBufferEnd(true);
         widget->geometry.width=newGeometry.width;
         widget->geometry.height=newGeometry.height;

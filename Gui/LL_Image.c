@@ -125,7 +125,7 @@ bool pImageLoad(llImage *widget, uint32_t imageAddr)
         widget->imageAddr=imageAddr;
 
         llDoubleBufferStart();
-        newGeometry=llGeneralImageShow(widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
+        newGeometry=llGeneralImageShow((llGeneral*)widget,widget->imageAddr,widget->geometry.x+globalPos.x,widget->geometry.y+globalPos.y);
         llDoubleBufferEnd(true);
         
         widget->geometry.width=newGeometry.width;

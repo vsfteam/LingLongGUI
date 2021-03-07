@@ -183,21 +183,37 @@ void *llRealloc(void *ptr,uint32_t newSize)
 
 void llExFlashInit(void)
 {
-    uint16_t i=0;
+        uint16_t i=0;
     uint8_t pBuffer[1024];
+		uint8_t* pWrite=(uint8_t*)&sdramBuffer[SDRAM_NOR_ADDR];
 
     //自动复制nor到sdram
     for(i=0; i<1024; i++)
     {
         w25qxxRead(pBuffer,(i*1024),1024);
-        sdram_8bitWrite(SDRAM_NOR_ADDR+(i*1024),pBuffer,1024);
+        //sdram_8bitWrite(SDRAM_NOR_ADDR+(i*1024),pBuffer,1024);
+				sdram_8bitWrite(pWrite+(i*1024),pBuffer,1024);
     }
+    
+//    uint16_t i=0;
+//    uint8_t pBuffer[1024];
+
+//    //自动复制nor到sdram
+//    for(i=0; i<1024; i++)
+//    {
+//        w25qxxRead(pBuffer,(i*1024),1024);
+//        sdram_8bitWrite(SDRAM_NOR_ADDR+(i*1024),pBuffer,1024);
+//    }
 }
 
 void llReadExFlash(uint32_t addr,uint8_t* pBuffer,uint16_t length)
 {
 //    w25qxxRead(pBuffer,addr,length);
-    sdram_8bitRead(SDRAM_NOR_ADDR+addr,pBuffer,length);
+//    sdram_8bitRead(SDRAM_NOR_ADDR+addr,pBuffer,length);
+    
+    uint8_t* pRead=(uint8_t*)&sdramBuffer[SDRAM_NOR_ADDR]+addr;
+    //sdram_8bitRead(SDRAM_NOR_ADDR+addr,pBuffer,length);
+		sdram_8bitRead(pRead,pBuffer,length);
 }
 
 void llBuzzerBeep(void)

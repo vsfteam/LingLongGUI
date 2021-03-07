@@ -77,7 +77,7 @@ void pSliderRefresh(llSlider *widget)
                             }
                         }
                     //显示游标图片
-                    llGeneralImageShow(widget->curImgAddr,pos.x+offset,pos.y);
+                    llGeneralImageShow((llGeneral*)widget,widget->curImgAddr,pos.x+offset,pos.y);
 
                     widget->curImgGeometry.x=offset;
                 }
@@ -120,7 +120,7 @@ void pSliderRefresh(llSlider *widget)
                             }
                         }
                     //显示游标图片
-                    llGeneralImageShow(widget->curImgAddr,pos.x,pos.y+offset);
+                    llGeneralImageShow((llGeneral*)widget,widget->curImgAddr,pos.x,pos.y+offset);
                     widget->curImgGeometry.y=offset;
                 }
             }
@@ -364,7 +364,7 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                     pNewWidget->cursorWidth=curSize.width;
 
                     //显示背景图片
-                    llGeneralImageShow(bgImgAddr,pNewWidget->bgImgGeometry.x+pos.x,pNewWidget->bgImgGeometry.y+pos.y);
+                    llGeneralImageShow((llGeneral*)pNewWidget,bgImgAddr,pNewWidget->bgImgGeometry.x+pos.x,pNewWidget->bgImgGeometry.y+pos.y);
                 }
                 else
                 {
@@ -392,7 +392,7 @@ llSlider *llSliderQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
                     pNewWidget->cursorWidth=curSize.height;
 
                     //显示背景图片
-                    llGeneralImageShow(bgImgAddr,pNewWidget->bgImgGeometry.x+pos.x,pNewWidget->bgImgGeometry.y+pos.y);
+                    llGeneralImageShow((llGeneral*)pNewWidget,bgImgAddr,pNewWidget->bgImgGeometry.x+pos.x,pNewWidget->bgImgGeometry.y+pos.y);
                 }
 
             }

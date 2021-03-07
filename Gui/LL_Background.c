@@ -62,7 +62,7 @@ llBackground *llBackgroundQuickCreate(uint16_t nameId,int16_t width,int16_t heig
         else
         {
             llDoubleBufferStart();
-            llGeneralImageShow(pNewWidget->imageAddr,pNewWidget->geometry.x,pNewWidget->geometry.y);
+            llGeneralImageShow((llGeneral*)pNewWidget,pNewWidget->imageAddr,pNewWidget->geometry.x,pNewWidget->geometry.y);
             llDoubleBufferEnd(true);
         }
         //add linked list
@@ -170,7 +170,7 @@ void pBackgroundSetImage(llBackground *widget,uint32_t imageAddr)
     widget->isColor=false;
     widget->imageAddr=imageAddr;
     llDoubleBufferStart();  
-    llGeneralImageShow(widget->imageAddr,widget->geometry.x,widget->geometry.y);
+    llGeneralImageShow((llGeneral*)widget,widget->imageAddr,widget->geometry.x,widget->geometry.y);
     llDoubleBufferEnd(true);
 }
 

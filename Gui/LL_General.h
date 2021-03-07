@@ -58,6 +58,7 @@ extern "C" {
 #define RECTANGLE_RIGHT_X_POS(x,w1,w2)   (x+(w1-w2))
 #define RECTANGLE_BUTTOM_Y_POS(y,h1,h2)   (y+(h1-h2))
 
+#define IMAGE_NONE    0xFFFFFFFF
 typedef enum{
     widgetTypeNone,//仅background使用
     widgetTypeBackground,
@@ -188,7 +189,7 @@ bool llRectIsFullIn(llGeometry bigRect, llGeometry smallRect);
 bool llPointInRect(llPoint point, llGeometry rc);
 bool llRectIntersect(const llGeometry rect1, const llGeometry rect2,llGeometry * outRect);
 //bool llPointInRect(int16_t x, int16_t y,llPoint *buf,uint32_t bufCount);
-llGeometry llGeneralImageShow(uint32_t imageAddr, int16_t x, int16_t y);
+llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr, int16_t x, int16_t y);
 llSize llGeneralGetImageSize(uint32_t imageAddr);
 llGeometry llGeneralGetImageGeometry(int16_t x,int16_t y,uint32_t imageAddr);
 void llGeneralImageSpecificAreaShow(llGeometry originGeometry, llGeometry targetGeometry, uint32_t imageAddr);
@@ -206,12 +207,19 @@ void llGeneralWidgetParentRecover(llGeneral *widget,llGeometry geometry);
 bool llGeneralParentLinkHidden(llGeneral *widget);
 void llGeneralWidgetParentRecoverMove(llGeneral *widget,llGeometry oldGeometry,llGeometry newGeometry);
 
+#define PARENT_BACKGROUND_TYPE_ERROR   0
+#define PARENT_BACKGROUND_TYPE_COLOR   1
+#define PARENT_BACKGROUND_TYPE_IMAGE   2
+
+uint8_t llGeneralGetParentBackgroundInfo(llGeneral *widget,llColor* retColor,uint32_t *retImageAddr,llPoint* retImagePoint);
+
 /***********************************888转换屏幕位数颜色*********************************************/
 
 llColor RGB888(uint32_t color);
 llColor RGB_CONVERT(uint8_t R,uint8_t G,uint8_t B);
 void llGeometryGetR_G_B(llColor color,uint8_t *r,uint8_t *g,uint8_t *b);
 bool llGeometryAutoSetHiddenIsShow(llGeneral *widget,bool isHidden);
+llColor llGeometryColorMix(llColor rgb1,llColor rgb2,uint8_t alpha2);
 
 #ifdef __cplusplus
 }
