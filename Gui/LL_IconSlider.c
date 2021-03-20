@@ -1,20 +1,22 @@
-#include "LL_WindowSlider.h"
+#include "LL_IconSlider.h"
 #include "LL_Linked_List.h"
 #include "LL_Handler.h"
+#include "LL_Timer.h"
+void llIconSliderAction(void *widget, uint8_t touchSignal);
+void nIconSliderDelete(uint16_t nameId);
+void pIconSliderRefresh(llIconSlider *widget);
+void nIconSliderRefresh(uint16_t nameId);
 
-void llWindowSliderAction(void *widget, uint8_t touchSignal);
-void nWindowSliderDelete(uint16_t nameId);
-void pWindowSliderRefresh(llWindowSlider *widget);
-void nWindowSliderRefresh(uint16_t nameId);
-
-bool slotWindowSliderPressed(llConnectInfo info)
+bool slotIconSliderPressed(llConnectInfo info)
 {
-    llWindowSlider * widget;
+    llIconSlider * widget;
     int16_t x,y;
-    widget=(llWindowSlider*)info.receiver;
+    widget=(llIconSlider*)info.receiver;
 
     if(llClickGetPoint(&x,&y)==true)
     {
+        llTimer_stop(&widget->clickTimer);
+        widget->isClickItem=true;
         widget->clickPoint.x=x;
         widget->clickPoint.y=y;
         return true;
@@ -22,12 +24,12 @@ bool slotWindowSliderPressed(llConnectInfo info)
     return false;
 }
 
-bool slotWindowSliderReleased(llConnectInfo info)
+bool slotIconSliderReleased(llConnectInfo info)
 {
-    llWindowSlider * widget;
+    llIconSlider * widget;
     uint8_t itemNumMod,minShowItemCount;
 
-    widget=(llWindowSlider*)info.receiver;
+    widget=(llIconSlider*)info.receiver;
 
     if(widget->isPageMove)
     {
@@ -207,38 +209,58 @@ bool slotWindowSliderReleased(llConnectInfo info)
         }
     }
 
-    widget->clickPoint.x=0;
-    widget->clickPoint.y=0;
+    if(widget->isClickItem==true)
+    {
+        llTimer_start(&widget->clickTimer);
+    }
 
-    pWindowSliderRefresh(widget);
+    pIconSliderRefresh(widget);
 
     return false;
 }
 
-bool slotWindowSliderMove(llConnectInfo info)
+bool slotIconSliderMove(llConnectInfo info)
 {
-    llWindowSlider * widget;
+    llIconSlider * widget;
     int16_t nowX,nowY;
     bool clickState;
 
-    widget=(llWindowSlider*)info.receiver;
+    widget=(llIconSlider*)info.receiver;
 
     clickState=llClickGetPoint(&nowX,&nowY);
     if(clickState==true)
     {
+        if(widget->isClickItem==true)//判断是移动还是点击
+        {
+            if((abs(nowX-widget->clickPoint.x)>5)||(abs(nowY-widget->clickPoint.y)>5))
+            {
+                widget->isClickItem=false;
+            }
+        }
+        
         if(widget->isPageMove)
         {
             if(widget->isHorizontalScroll)//水平
             {
                 widget->moveOffset=nowX-widget->clickPoint.x;
+                //拉到尽头偏移减半
+                if((widget->moveOffset>0)||((widget->page+1==widget->pageMax)&&((widget->moveOffset+widget->columnCount*widget->itemWidth)<widget->geometry.width)))
+                {
+                    widget->moveOffset/=2;
+                }
                 widget->moveX=widget->moveOffset-(widget->page*(widget->geometry.width+widget->pageSpacing));
-                pWindowSliderRefresh(widget);
+                pIconSliderRefresh(widget);
             }
             else
             {
                 widget->moveOffset=nowY-widget->clickPoint.y;
+                //拉到尽头偏移减半
+                if((widget->moveOffset>0)||((widget->page+1==widget->pageMax)&&((widget->moveOffset+widget->rowCount*widget->itemHeight)<widget->geometry.height)))
+                {
+                    widget->moveOffset/=2;
+                }
                 widget->moveY=widget->moveOffset-(widget->page*(widget->geometry.height+widget->pageSpacing));
-                pWindowSliderRefresh(widget);
+                pIconSliderRefresh(widget);
             }
         }
         else
@@ -246,21 +268,31 @@ bool slotWindowSliderMove(llConnectInfo info)
             if(widget->isHorizontalScroll)//水平
             {
                 widget->moveOffset=nowX-widget->clickPoint.x;
+                //拉到尽头偏移减半
+                if((widget->moveOffset>0)||((widget->moveOffset+widget->columnCount*widget->itemWidth)<widget->geometry.width))
+                {
+                    widget->moveOffset/=2;
+                }
                 widget->moveX=widget->moveOffset-(widget->itemNum*widget->itemWidth);
-                pWindowSliderRefresh(widget);
+                pIconSliderRefresh(widget);
             }
             else
             {
                 widget->moveOffset=nowY-widget->clickPoint.y;
+                //拉到尽头偏移减半
+                if((widget->moveOffset>0)||((widget->moveOffset+widget->rowCount*widget->itemHeight)<widget->geometry.height))
+                {
+                    widget->moveOffset/=2;
+                }
                 widget->moveY=widget->moveOffset-(widget->itemNum*widget->itemHeight);
-                pWindowSliderRefresh(widget);
+                pIconSliderRefresh(widget);
             }
         }
     }
     return false;
 }
 
-llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
+llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
                                           int16_t x, int16_t y, int16_t width, int16_t height,
                                           uint8_t rowCount,uint8_t columnCount,
                                           uint8_t itemWidth,uint8_t itemHeight,
@@ -268,14 +300,14 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
                                           uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                           bool isHorizontalScroll,bool isHidden)
 {
-    llWindowSlider * pNewWidget = NULL;
+    llIconSlider * pNewWidget = NULL;
     llListWidgetInfo *parentInfo;
     uint32_t *imageAddrBuf;
 
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
-        pNewWidget = LL_MALLOC_WIDGET_INFO(llWindowSlider);
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llIconSlider);
         imageAddrBuf = llMalloc(sizeof (uint32_t)*rowCount*columnCount*pageMax);
         if((pNewWidget!=NULL)&&(imageAddrBuf!=NULL))
         {
@@ -284,7 +316,7 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
             pNewWidget->parentType=((llGeneral*)(parentInfo->widget))->widgetType;
             pNewWidget->parentWidget=parentInfo->widget;
 
-            pNewWidget->widgetType=widgetTypeWindowSlider;
+            pNewWidget->widgetType=widgetTypeIconSlider;
             pNewWidget->geometry.x=x;
             pNewWidget->geometry.y=y;
             pNewWidget->geometry.width=width;
@@ -292,6 +324,7 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
 
             pNewWidget->moveX=0;
             pNewWidget->moveY=0;
+            pNewWidget->itemNum=0;
 
             pNewWidget->rowCount=rowCount;
             pNewWidget->columnCount=columnCount;
@@ -300,9 +333,9 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
             pNewWidget->hAlign=hAlign;
             pNewWidget->vAlign=vAlign;
 
-            pNewWidget->deleteFunc=nWindowSliderDelete;
-            pNewWidget->actionFunc=llWindowSliderAction;
-            pNewWidget->refreshFunc=nWindowSliderRefresh;
+            pNewWidget->deleteFunc=nIconSliderDelete;
+            pNewWidget->actionFunc=llIconSliderAction;
+            pNewWidget->refreshFunc=nIconSliderRefresh;
             pNewWidget->isHidden=isHidden;
             pNewWidget->isEnable=true;
             pNewWidget->pageMax=pageMax;
@@ -312,13 +345,14 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
             pNewWidget->imageAddr=imageAddrBuf;
             pNewWidget->pageSpacing=pageSpacing;
             pNewWidget->isPageMove=isPageMove;
+            pNewWidget->isClickItem=true;
             //add linked list
             llListWidgetAdd(&(parentInfo->child_link),pNewWidget);
 
             //动作
-            llConnectSignal(nameId,SIGNAL_CLICK_PRESSED,nameId,slotWindowSliderPressed);
-            llConnectSignal(nameId,SIGNAL_CLICK_HOLD_MOVE,nameId,slotWindowSliderMove);
-            llConnectSignal(nameId,SIGNAL_CLICK_RELEASED,nameId,slotWindowSliderReleased);
+            llConnectSignal(nameId,SIGNAL_CLICK_PRESSED,nameId,slotIconSliderPressed);
+            llConnectSignal(nameId,SIGNAL_CLICK_HOLD_MOVE,nameId,slotIconSliderMove);
+            llConnectSignal(nameId,SIGNAL_CLICK_RELEASED,nameId,slotIconSliderReleased);
         }
         else
         {
@@ -330,13 +364,13 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
     return pNewWidget;
 }
 
-llWindowSlider *llWindowSliderCreate(uint16_t nameId, uint16_t parentNameId,
+llIconSlider *llIconSliderCreate(uint16_t nameId, uint16_t parentNameId,
                                      int16_t x, int16_t y, int16_t width, int16_t height,
                                      uint8_t rowCount,uint8_t columnCount,
                                      uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                      bool isHorizontalScroll,bool isHidden)
 {
-    return llWindowSliderQuickCreate(nameId,parentNameId,x,y,width,height,rowCount,columnCount,
+    return llIconSliderQuickCreate(nameId,parentNameId,x,y,width,height,rowCount,columnCount,
                                      (uint8_t)(width/rowCount),(uint8_t)(height/columnCount),
                                      llAlignHCenter,llAlignVCenter,
                                      pageMax,pageSpacing,isPageMove,
@@ -344,9 +378,9 @@ llWindowSlider *llWindowSliderCreate(uint16_t nameId, uint16_t parentNameId,
 }
 
 
-void llWindowSliderAction(void *widget,uint8_t touchSignal)
+void llIconSliderAction(void *widget,uint8_t touchSignal)
 {
-    if(((llWindowSlider*)widget)->isEnable)
+    if(((llIconSlider*)widget)->isEnable)
     {
         switch(touchSignal)
         {
@@ -363,18 +397,84 @@ void llWindowSliderAction(void *widget,uint8_t touchSignal)
     }
 }
 
-void pWindowSliderFree(llWindowSlider *widget)
+void pIconSliderLoop(llIconSlider *widget)
+{
+    int16_t calX,calY;
+    uint8_t row,column;
+    
+    int16_t nowX,nowY;
+    bool clickState;
+    pIconSliderRefresh((llIconSlider*)widget);
+    if(llTimer_timeOut(&widget->clickTimer,200,false))
+    {
+        clickState=llClickGetPoint(&nowX,&nowY);
+        if(clickState==false)
+        {
+            //计算点击item序号
+            calX=widget->clickPoint.x-widget->geometry.x;
+            calY=widget->clickPoint.y-widget->geometry.y;
+            column=calX/widget->itemWidth;
+            row=calY/widget->itemHeight;
+            
+            widget->clickItemNum=row*widget->columnCount+column;
+            if(widget->isPageMove)
+            {
+                widget->clickItemNum+=widget->columnCount*widget->rowCount*widget->page;
+            }
+            else
+            {
+                widget->clickItemNum+=widget->itemNum;
+            }
+            
+            llEmitSignal(widget,SIGNAL_WIDGET_ACTIVE);
+        }
+    }
+}
+
+void nIconSliderLoop(uint16_t nameId)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeIconSlider);
+    if(widget!=NULL)
+    {
+        pIconSliderLoop((llIconSlider*)widget);
+    }
+}
+
+void pIconSliderFree(llIconSlider *widget)
 {
     llFree(widget->imageAddr);
     llFree(widget);
 }
 
-void nWindowSliderDelete(uint16_t nameId)
+void nIconSliderDelete(uint16_t nameId)
 {
+    llListHead *tempPos,*safePos;
+    llListWidgetInfo *linkInfo;
+    llListWidgetInfo *parentInfo;
+    llListWidgetInfo *tempInfo;
+    llIconSlider *widget;
 
+    if(llList_GetInfoByName(&linkInfo,nameId)==true)
+    {
+        widget=linkInfo->widget;
+        //查找父链表
+        llList_GetInfoByName(&parentInfo,((llGeneral*)widget->parentWidget)->nameId);
+        //消除自身在父链表中的位置数据
+        list_for_each_prev_safe(tempPos, safePos,&parentInfo->child_link)
+        {
+            tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);
+            if(tempInfo->widget==widget)
+            {
+                llLinkedListDelete(tempPos);
+                pIconSliderFree(widget);
+                llFree(tempInfo);
+            }
+        }
+    }
 }
 
-void pWindowSliderRefresh(llWindowSlider *widget)
+void pIconSliderRefresh(llIconSlider *widget)
 {
     llPoint globalPos;
     int16_t x,y;
@@ -535,7 +635,7 @@ void pWindowSliderRefresh(llWindowSlider *widget)
 
                 if( llRectIntersect(widget->geometry, imgGeometry,&showGeometry))
                 {
-                    llGeneralImageSpecificAreaShow(imgGeometry, showGeometry,widget->imageAddr[i]);
+                    llGeneralImageSpecificAreaShow((llGeneral*)widget,imgGeometry, showGeometry,widget->imageAddr[i]);
                 }
             }
             else
@@ -554,18 +654,18 @@ void pWindowSliderRefresh(llWindowSlider *widget)
     }
 }
 
-void nWindowSliderRefresh(uint16_t nameId)
+void nIconSliderRefresh(uint16_t nameId)
 {
     void *widget;
-    widget=llGeneralGetWidget(nameId,widgetTypeWindowSlider);
+    widget=llGeneralGetWidget(nameId,widgetTypeIconSlider);
 
     if(widget!=NULL)
     {
-        pWindowSliderRefresh((llWindowSlider*)widget);
+        pIconSliderRefresh((llIconSlider*)widget);
     }
 }
 
-void pWindowSliderAddImage(llWindowSlider *widget,uint32_t imageAddr)
+void pIconSliderAddImage(llIconSlider *widget,uint32_t imageAddr)
 {
     if(widget->imageCount<(widget->rowCount*widget->columnCount*widget->pageMax))
     {
@@ -573,12 +673,12 @@ void pWindowSliderAddImage(llWindowSlider *widget,uint32_t imageAddr)
     }
 }
 
-void nWindowSliderAddImage(uint16_t nameId,uint32_t imageAddr)
+void nIconSliderAddImage(uint16_t nameId,uint32_t imageAddr)
 {
     void *widget;
-    widget=llGeneralGetWidget(nameId,widgetTypeWindowSlider);
+    widget=llGeneralGetWidget(nameId,widgetTypeIconSlider);
     if(widget!=NULL)
     {
-        pWindowSliderAddImage((llWindowSlider*)widget,imageAddr);
+        pIconSliderAddImage((llIconSlider*)widget,imageAddr);
     }
 }

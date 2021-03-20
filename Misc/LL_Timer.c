@@ -53,6 +53,11 @@ void llTimer_start(uint32_t *pTimer)
     }
 }
 
+void llTimer_stop(uint32_t *pTimer)
+{
+    *pTimer=0;
+}
+
 // return 1 time out
 bool llTimer_timeOut(uint32_t *pTimer,uint32_t msec,bool isRestart)
 {

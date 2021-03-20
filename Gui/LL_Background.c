@@ -260,6 +260,6 @@ void pBackgroundSpecificAreaRecover(llBackground *widget,llGeometry geometry)
     else
     {
         //局部刷图
-        llGeneralImageSpecificAreaShow(widget->geometry,geometry,widget->imageAddr);
+        llGeneralImageSpecificAreaShow((llGeneral*)widget,widget->geometry,geometry,widget->imageAddr);
     }
 }

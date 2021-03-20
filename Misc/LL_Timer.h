@@ -27,12 +27,25 @@
 // 放在定时器中断内
 void llTimer_ticks(uint16_t cycleMs);
 
+// 启动定时器
 void llTimer_start(uint32_t *pTimer);
 
-// return true, time out
+void llTimer_stop(uint32_t *pTimer);
+
+/***************************************************************************//**
+ * @fn         bool llTimer_timeOut(uint32_t *pTimer,uint32_t msec,bool isRestart);
+ * @brief      超时检测
+ * @param      *pTimer    计数变量
+ *             msec       定时时间ms
+ *             isRestart  超时触发后，是否自动重新启动
+ * @return     bool       true:时间到 false:还没到设定时间
+ * @version    V0.1
+ * @date       2021-01-10
+ * @details    
+ ******************************************************************************/
 bool llTimer_timeOut(uint32_t *pTimer,uint32_t msec,bool isRestart);
 
-// 循环等待延时
+// 软件循环等待延时
 void llTimer_delayMs(uint32_t delayMs);
 
 /*

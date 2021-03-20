@@ -498,7 +498,7 @@ uint32_t llGeneralGetParentOverlapColor(uint32_t parentAddr,llGeometry parentGep
     return retAddr;
 }
 
-llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr,int16_t x,int16_t y)//针对16色图片和16色显示
+llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr,int16_t x,int16_t y)
 {
     uint32_t addr=0,bgAddr=0,tempAddr=0;
     llGeometry geometry= {0,0,0,0},bgGeometry= {0,0,0,0};
@@ -589,14 +589,6 @@ llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr,int16_t x,int
                     llReadExFlash(addr,(uint8_t*)&unionReadBuf.u8ReadBuf,2 *currPixelCount);
                     addr=addr+(2 *currPixelCount);
 
-//                    tempPoint.x = x+currLineX;
-
-//                    if(i %geometry.width==0)//换行
-//                    {
-//                        tempPoint.x=x;
-//                        tempPoint.y++;
-//                    }
-                    
                     if((i %geometry.width==0)&&(tempPoint.x!=geometry.x))//换行
                 {
                     tempPoint.y++;
@@ -689,14 +681,6 @@ llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr,int16_t x,int
                     currPixelCount = MIN(writePixelCount, geometry.width - currLineX);
                     llReadExFlash(addr,(uint8_t*)&unionReadBuf.u8ReadBuf,4 *currPixelCount);
                     addr=addr+(4 *currPixelCount);
-
-//                    tempPoint.x = x+currLineX;
-
-//                    if(i %geometry.width==0)//换行
-//                    {
-//                        tempPoint.x=x;
-//                        tempPoint.y++;
-//                    }
 
                     if((i %geometry.width==0)&&(tempPoint.x!=geometry.x))//换行
                 {
@@ -843,9 +827,9 @@ void llRgbFillSpecificAreaMultipleColors(llGeometry originGeometry,llGeometry ta
 }
 
 //全屏绝对坐标计算
-void llGeneralImageSpecificAreaShow(llGeometry originGeometry,llGeometry targetGeometry,uint32_t imageAddr)
+void llGeneralImageSpecificAreaShow(llGeneral *widget,llGeometry originGeometry,llGeometry targetGeometry,uint32_t imageAddr)
 {
-    uint32_t addr=0,tempAddr=0;
+    uint32_t addr=0,bgAddr=0,tempAddr=0;
     llPoint tempPoint;
     uint16_t writePixelCount=0;//读取一次能写多少个像素
     uint16_t writeHeightCount=0; //一次最多能读多少行， 如果不够一行的话就是 0
@@ -853,20 +837,38 @@ void llGeneralImageSpecificAreaShow(llGeometry originGeometry,llGeometry targetG
     uint16_t currLineX = 0 ;//下一个要写的点的x坐标， 当每次能读的像素少于 一行的宽 才会用到。
     uint16_t currPixelCount = 0; //当只能写少于一行， 这用于储存这一行实际写多少个像素
 
-    imageHeaderTypedef imageHeader;
+    imageHeaderTypedef imageHeader,bgImageHeader;
 
+    llGeometry bgGeometry= {0,0,0,0};
+    
     union
     {
         uint8_t u8ReadBuf[IMAGE_READ_BYTE_MAX];
         uint16_t u16ReadBuf[IMAGE_READ_BYTE_MAX/2];
         uint32_t u32ReadBuf[IMAGE_READ_BYTE_MAX/4];
-    } unionReadBuf;
+    } unionReadBuf,bgUnionReadBuf;
 
     uint32_t i,j,totalCount;
+    
+uint8_t parentBackgroundType=PARENT_BACKGROUND_TYPE_ERROR;
+    llColor bgColor;
+    uint32_t bgImageAddr=0;
+    llPoint bgImagePoint= {0};
+    uint8_t alpha;
+    
+parentBackgroundType = llGeneralGetParentBackgroundInfo(widget,&bgColor,&bgImageAddr,&bgImagePoint);
 
-
-
-
+        if(parentBackgroundType==PARENT_BACKGROUND_TYPE_IMAGE)
+        {
+            bgAddr=bgImageAddr;
+            llReadExFlash(bgAddr,(uint8_t*)&bgImageHeader,16);
+            bgAddr=bgAddr+16;
+            bgGeometry.x=bgImagePoint.x;
+            bgGeometry.y=bgImagePoint.y;
+            bgGeometry.width=bgImageHeader.width;
+            bgGeometry.height=bgImageHeader.height;
+        }
+        
     addr=imageAddr;
     llReadExFlash(addr,(uint8_t*)&imageHeader,16);
     addr=addr+16;
@@ -883,8 +885,6 @@ void llGeneralImageSpecificAreaShow(llGeometry originGeometry,llGeometry targetG
         return;
     }
 
-
-    i=0;
     tempPoint.x=targetGeometry.x;
     tempPoint.y=targetGeometry.y;
 
@@ -934,6 +934,142 @@ void llGeneralImageSpecificAreaShow(llGeometry originGeometry,llGeometry targetG
         case CONVERT_TYPE_8888:
         {
 
+            break;
+        }
+        case CONVERT_TYPE_8565:
+        {
+            if(writeHeightCount > 0)
+                {
+                    currHeight = MIN(writeHeightCount, targetGeometry.height - i/ targetGeometry.width );
+                    for(j=0; j<currHeight; j++)
+                    {
+                        tempAddr=llGeneralGetParentOverlapColor(addr,originGeometry,tempPoint,convertTypeBit[CONVERT_TYPE_8565]);
+                        llReadExFlash(tempAddr,&unionReadBuf.u8ReadBuf[j*4*targetGeometry.width],4 *targetGeometry.width);
+                        tempPoint.y++;
+                    }
+                    
+
+                    if(parentBackgroundType==PARENT_BACKGROUND_TYPE_IMAGE)
+                    {
+
+                        for(j=0; j<currHeight; j++)
+                        {
+                            tempAddr=llGeneralGetParentOverlapColor(bgAddr,bgGeometry,tempPoint,convertTypeBit[CONVERT_TYPE_565]);
+                            llReadExFlash(tempAddr,&bgUnionReadBuf.u8ReadBuf[j*2*targetGeometry.width],2 *targetGeometry.width);
+                            tempPoint.y++;
+                        }
+                        for(j=0; j<(targetGeometry.width*currHeight); j++)
+                        {
+                            alpha=unionReadBuf.u32ReadBuf[j]>>16;
+
+                            if(alpha==0)
+                            {
+                                unionReadBuf.u16ReadBuf[j]=bgUnionReadBuf.u16ReadBuf[j];
+                            }
+                            else
+                            {
+                                if(alpha==0xFF)
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=unionReadBuf.u32ReadBuf[j]&0xFFFF;
+                                }
+                                else
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=llGeometryColorMix(bgUnionReadBuf.u16ReadBuf[j],unionReadBuf.u32ReadBuf[j]&0xFFFF,alpha);
+                                }
+                            }
+                        }
+                        llFillMultipleColors(targetGeometry.x, targetGeometry.y + i/targetGeometry.width, targetGeometry.x+targetGeometry.width -1,  targetGeometry.y + i/targetGeometry.width + currHeight -1,unionReadBuf.u16ReadBuf);
+                    }
+                    else
+                    {
+                        for(j=0; j<(targetGeometry.width*currHeight); j++)
+                        {
+                            alpha=unionReadBuf.u32ReadBuf[j]>>16;
+                            if(alpha==0)
+                            {
+                                unionReadBuf.u16ReadBuf[j]=bgColor;
+                            }
+                            else
+                            {
+                                if(alpha==0xFF)
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=unionReadBuf.u32ReadBuf[j]&0xFFFF;
+                                }
+                                else
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=llGeometryColorMix(bgColor,unionReadBuf.u32ReadBuf[j]&0xFFFF,alpha);
+                                }
+                            }
+                        }
+                        llFillMultipleColors(targetGeometry.x, targetGeometry.y + i/targetGeometry.width, targetGeometry.x+targetGeometry.width -1,  targetGeometry.y + i/targetGeometry.width + currHeight -1,unionReadBuf.u16ReadBuf);
+                    }
+
+
+                    i += currHeight * targetGeometry.width;
+                }
+                else
+                {
+                    tempPoint.y=originGeometry.y+(i/targetGeometry.width);
+                    currLineX = i % targetGeometry.width;
+                    currPixelCount = MIN(writePixelCount, targetGeometry.width - currLineX);
+                    tempPoint.x = targetGeometry.x+currLineX;
+                    tempAddr=llGeneralGetParentOverlapColor(addr,originGeometry,tempPoint,convertTypeBit[CONVERT_TYPE_8565]);
+                    llReadExFlash(tempAddr,(uint8_t*)&unionReadBuf.u8ReadBuf,4 *currPixelCount);
+
+                    if(parentBackgroundType==PARENT_BACKGROUND_TYPE_IMAGE)
+                    {
+
+                        tempAddr=llGeneralGetParentOverlapColor(bgAddr,bgGeometry,tempPoint,convertTypeBit[CONVERT_TYPE_565]);
+                        llReadExFlash(tempAddr,bgUnionReadBuf.u8ReadBuf,2 *currPixelCount);
+
+                        for(j=0; j<(currPixelCount); j++)
+                        {
+                            alpha=unionReadBuf.u32ReadBuf[j]>>16;
+
+                            if(alpha==0)
+                            {
+                                unionReadBuf.u16ReadBuf[j]=bgUnionReadBuf.u16ReadBuf[j];
+                            }
+                            else
+                            {
+                                if(alpha==0xFF)
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=unionReadBuf.u32ReadBuf[j]&0xFFFF;
+                                }
+                                else
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=llGeometryColorMix(bgUnionReadBuf.u16ReadBuf[j],unionReadBuf.u32ReadBuf[j]&0xFFFF,alpha);
+                                }
+                            }
+                        }
+                        llFillMultipleColors(tempPoint.x, tempPoint.y, tempPoint.x+currPixelCount -1,  tempPoint.y,unionReadBuf.u16ReadBuf);
+                    }
+                    else
+                    {
+                        for(j=0; j<(currPixelCount); j++)
+                        {
+                            alpha=unionReadBuf.u32ReadBuf[j]>>16;
+
+                            if(alpha==0)
+                            {
+                                unionReadBuf.u16ReadBuf[j]=bgColor;
+                            }
+                            else
+                            {
+                                if(alpha==0xFF)
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=unionReadBuf.u32ReadBuf[j]&0xFFFF;
+                                }
+                                else
+                                {
+                                    unionReadBuf.u16ReadBuf[j]=llGeometryColorMix(bgColor,unionReadBuf.u32ReadBuf[j]&0xFFFF,alpha);
+                                }
+                            }
+                        }
+                        llFillMultipleColors(tempPoint.x, tempPoint.y, tempPoint.x+currPixelCount -1,  tempPoint.y,unionReadBuf.u16ReadBuf);
+                    }
+                    i += currPixelCount;
+                }
             break;
         }
         default:

@@ -85,7 +85,7 @@ bool llCfgClickGetPoint(int16_t *x,int16_t *y)
     }
     *x=rx;
     *y=ry;
-    if((touchState!=0)&&(rx!=0xffff)&&(ry!=0xffff))
+    if((touchState!=0)&&(((rx!=0xffff)&&(ry!=0xffff))||((rx!=0)&&(ry!=0))))
     {
         touchState=true;
     }

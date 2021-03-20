@@ -91,11 +91,6 @@ void pDateTimeRefresh(llDateTime *widget)
             widget->textInfo.showGeometry.x=widget->geometry.x+globalPos.x;
             widget->textInfo.showGeometry.y=widget->geometry.y+globalPos.y;
 
-            if(widget->textInfo.isTransparent)
-            {
-                llGeneralWidgetParentRecover((llGeneral*)widget,widget->textInfo.showGeometry);
-            }
-
             char tempBuf[5];
 
             uint16_t year;
@@ -145,6 +140,11 @@ void pDateTimeRefresh(llDateTime *widget)
                 memcpy(addr,tempBuf,2);
             }
 
+            if(widget->textInfo.isTransparent)
+            {
+                llGeneralWidgetParentRecover((llGeneral*)widget,widget->textInfo.showGeometry);
+            }
+            
             llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t *)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
             textGeometry=llCharDisplay(&(widget->textInfo));
         }

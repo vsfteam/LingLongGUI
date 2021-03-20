@@ -18,8 +18,8 @@
  * must be released under GPL compatible free software license or commercial license.
 */
 
-#ifndef _LL_WINDOWSLIDER_H_
-#define _LL_WINDOWSLIDER_H_
+#ifndef _LL_ICON_SLIDER_H_
+#define _LL_ICON_SLIDER_H_
 
 #include "LL_General.h"
 
@@ -34,21 +34,23 @@ typedef struct
     llVerticalAlign vAlign:2;
     bool isHorizontalScroll:1;//水平移动
     bool isPageMove:1;
+    bool isClickItem:1;
     uint8_t page;
     uint8_t pageMax;
     uint8_t pageSpacing;
     uint8_t itemNum;
     uint8_t imageCount;
     uint32_t *imageAddr;
+    uint32_t clickTimer;
     int16_t moveX;
     int16_t moveY;
-//    int16_t moveOld;
     int16_t moveOffset;
+    uint16_t clickItemNum;
     llPoint clickPoint;
-}llWindowSlider;
+}llIconSlider;
 
 
-llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
+llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
                                           int16_t x, int16_t y, int16_t width, int16_t height,
                                           uint8_t rowCount,uint8_t columnCount,
                                           uint8_t itemWidth,uint8_t itemHeight,
@@ -56,16 +58,15 @@ llWindowSlider *llWindowSliderQuickCreate(uint16_t nameId, uint16_t parentNameId
                                           uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                           bool isHorizontalScroll,bool isHidden);
 
-llWindowSlider *llWindowSliderCreate(uint16_t nameId, uint16_t parentNameId,
+llIconSlider *llIconSliderCreate(uint16_t nameId, uint16_t parentNameId,
                                      int16_t x, int16_t y, int16_t width, int16_t height,
                                      uint8_t rowCount,uint8_t columnCount,
                                      uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                      bool isHorizontalScroll,bool isHidden);
 
-void nWindowSliderRefresh(uint16_t nameId);
+void pIconSliderAddImage(llIconSlider *widget,uint32_t imageAddr);
+void nIconSliderAddImage(uint16_t nameId,uint32_t imageAddr);
 
-void pWindowSliderAddImage(llWindowSlider *widget,uint32_t imageAddr);
-void nWindowSliderAddImage(uint16_t nameId,uint32_t imageAddr);
+void nIconSliderLoop(uint16_t nameId);
 
-
-#endif //_LL_WINDOWSLIDER_H_
+#endif //_LL_ICON_SLIDER_H_

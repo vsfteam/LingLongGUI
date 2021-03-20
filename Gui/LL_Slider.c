@@ -65,7 +65,7 @@ void pSliderRefresh(llSlider *widget)
                             if(curGeometry.x<newCurGeometry.x)//恢复左侧
                             {
                                 curGeometry.width=newCurGeometry.x-curGeometry.x;
-                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->fgImgAddr);
+                        llGeneralImageSpecificAreaShow((llGeneral*)widget,bgGeometry,curGeometry,widget->fgImgAddr);
                             }
                             else
                             {
@@ -73,7 +73,7 @@ void pSliderRefresh(llSlider *widget)
                         {
                                 curGeometry.width=curGeometry.x-newCurGeometry.x;
                                 curGeometry.x=newCurGeometry.x+newCurGeometry.width;
-                            llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
+                            llGeneralImageSpecificAreaShow((llGeneral*)widget,bgGeometry,curGeometry,widget->bgImgAddr);
                             }
                         }
                     //显示游标图片
@@ -108,7 +108,7 @@ void pSliderRefresh(llSlider *widget)
                             if(curGeometry.y<newCurGeometry.y)//恢复上方
                             {
                                 curGeometry.height=newCurGeometry.y-curGeometry.y;
-                        llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->bgImgAddr);
+                        llGeneralImageSpecificAreaShow((llGeneral*)widget,bgGeometry,curGeometry,widget->bgImgAddr);
                             }
                             else
                             {
@@ -116,7 +116,7 @@ void pSliderRefresh(llSlider *widget)
                         {
                                 curGeometry.height=curGeometry.y-newCurGeometry.y;
                                 curGeometry.y=newCurGeometry.y+newCurGeometry.height;
-                            llGeneralImageSpecificAreaShow(bgGeometry,curGeometry,widget->fgImgAddr);
+                            llGeneralImageSpecificAreaShow((llGeneral*)widget,bgGeometry,curGeometry,widget->fgImgAddr);
                             }
                         }
                     //显示游标图片

@@ -75,7 +75,7 @@ typedef enum{
     widgetTypeGauge,
     widgetTypeQRCode,
     widgetTypeDateTime,
-    widgetTypeWindowSlider
+    widgetTypeIconSlider
 }llWidgetType;
 
 #define LLGENERAL_ATTRIBUTES  llWidgetType widgetType; \
@@ -192,7 +192,7 @@ bool llRectIntersect(const llGeometry rect1, const llGeometry rect2,llGeometry *
 llGeometry llGeneralImageShow(llGeneral *widget,uint32_t imageAddr, int16_t x, int16_t y);
 llSize llGeneralGetImageSize(uint32_t imageAddr);
 llGeometry llGeneralGetImageGeometry(int16_t x,int16_t y,uint32_t imageAddr);
-void llGeneralImageSpecificAreaShow(llGeometry originGeometry, llGeometry targetGeometry, uint32_t imageAddr);
+void llGeneralImageSpecificAreaShow(llGeneral *widget,llGeometry originGeometry,llGeometry targetGeometry,uint32_t imageAddr);
 //void llRgbaFillMultipleColors(llGeometry geometry, uint8_t *color);
 //void llRgbFillMultipleColors(llGeometry geometry,uint8_t *color);
 //void llRgbaFillSpecificAreaMultipleColors(llGeometry originGeometry,llGeometry targetGeometry, uint8_t *color);
