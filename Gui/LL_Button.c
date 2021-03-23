@@ -287,17 +287,13 @@ void pButtonRefresh(llButton *widget,bool toggle)
                             widget->isChecked=true;
                             widget->isPressed=false;
                             llEmitSignal(widget,SIGNAL_CLICK_CHECK_PRESSED);
-                            if(widget->buzzerCfg==BUTTON_BUZZER_PRESSED)
-                            {
-                                isBeep=true;
-                            }
                         }
                         else
                         {
                             pButtonToggle(widget);
                             widget->isChecked=false;
                             llEmitSignal(widget,SIGNAL_CLICK_CHECK_RELEASED);
-                            if(widget->buzzerCfg==BUTTON_BUZZER_RELEASED)
+                            if((widget->buzzerCfg==BUTTON_BUZZER_RELEASED)||(widget->buzzerCfg==BUTTON_BUZZER_ALL))
                             {
                                 isBeep=true;
                             }
@@ -308,16 +304,15 @@ void pButtonRefresh(llButton *widget,bool toggle)
                         if(widget->isChecked==false)
                         {
                             pButtonToggle(widget);
+                            if((widget->buzzerCfg==BUTTON_BUZZER_PRESSED)||(widget->buzzerCfg==BUTTON_BUZZER_ALL))
+                            {
+                                isBeep=true;
+                            }
                         }
                         else
                         {
                             widget->isPressed=true;
                         }
-                    }
-                    
-                    if(widget->buzzerCfg==BUTTON_BUZZER_ALL)
-                    {
-                        isBeep=true;
                     }
                 }
                 
