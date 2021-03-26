@@ -1495,4 +1495,5 @@ uint8_t llGeneralGetParentBackgroundInfo(llGeneral *widget,llColor* retColor,uin
             }
         }
     }
+    return PARENT_BACKGROUND_TYPE_ERROR;
 }
