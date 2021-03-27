@@ -80,6 +80,8 @@ void pCheckBoxShow(llCheckBox *widget)
     width=widget->geometry.width;
     height=widget->geometry.height;
 
+    y+=(height/2)-6;
+    
     if(widget->isChecked==true)
     {
         if(widget->checkImagePath!=NULL)
@@ -121,6 +123,7 @@ void pCheckBoxShow(llCheckBox *widget)
 void pCheckBoxRefresh(llCheckBox *widget,bool toggle)
 {
     llPoint globalPos;
+    int16_t textHeight;
 
     if(widget->isHidden==false)
     {
@@ -151,13 +154,15 @@ void pCheckBoxRefresh(llCheckBox *widget,bool toggle)
             }
         }
 
+        llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t *)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
+        textHeight=llFontGetHeightSize();
+
         //更新文字坐标
         widget->textInfo.geometry.x=widget->geometry.x+globalPos.x+12+5;
-        widget->textInfo.geometry.y=RECTANGLE_MID_Y_POS(widget->geometry.y+globalPos.y,12,widget->geometry.height);
-
+        widget->textInfo.geometry.y=RECTANGLE_MID_Y_POS(widget->geometry.y+globalPos.y,textHeight,widget->geometry.height);
+        widget->textInfo.geometry.width=widget->textInfo.geometry.width-12-5;
         widget->textInfo.showGeometry=widget->textInfo.geometry;
 
-        llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t *)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
         llCharDisplay(&(widget->textInfo));
     }
     }
