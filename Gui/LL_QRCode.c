@@ -52,9 +52,9 @@ void nQRCodeDelete(uint16_t nameId)
     {
         widget=linkInfo->widget;
 
-        //���Ҹ�����
+        //查找父链表
         llList_GetInfoByName(&parentInfo,((llGeneral*)widget->parentWidget)->nameId);
-        //���������ڸ������е�λ������
+        //消除自身在父链表中的位置数据
         list_for_each_prev_safe(tempPos,safePos, &parentInfo->child_link)
         {
             tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);

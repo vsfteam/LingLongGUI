@@ -41,32 +41,34 @@ void pProgressBarRefresh(llProgressBar *widget)
 
             if(widget->isMicroRefresh==false)
             {
-                //����ɫ
                 llFillSingleColor(x,y,x+width-1,y+height-1,widget->backgroundColor);
             }
 
-            //�����ֵ
             u16Temp=width*widget->percent/100.0;
-            if(widget->percentWidth<u16Temp)//��ֵ���ھ�ֵ
+            if(widget->percentWidth<u16Temp)//差值,刷新
             {
                 llFillSingleColor(x+widget->percentWidth,y,x+u16Temp,y+height-1,widget->progressColor);
             }
             else
             {
-                if(widget->percentWidth>u16Temp)//��ֵС�ھ�ֵ
+                if(widget->percentWidth>u16Temp)//差值,刷新
                 {
                     llFillSingleColor(x+u16Temp,y,x+widget->percentWidth,y+height-1,widget->backgroundColor);
+                }
+                else//相同值,刷新
+                {
+                    llFillSingleColor(x,y,x+widget->percentWidth,y+height-1,widget->progressColor);
                 }
             }
             widget->percentWidth=u16Temp;
 
-            //����
+            //边框
             llFillSingleColor(x,y,x,y+height-1,RGB_CONVERT(188,188,188));
             llFillSingleColor(x,y,x+width-1,y,RGB_CONVERT(188,188,188));
             llFillSingleColor(x+width-1,y,x+width-1,y+height-1,RGB_CONVERT(188,188,188));
             llFillSingleColor(x,y+height-1,x+width-1,y+height-1,RGB_CONVERT(188,188,188));
 
-            //������������
+            //显示百分比
             widget->textInfo.geometry.x=globalPos.x+widget->geometry.x+widget->geometry.width-widget->textInfo.fontLibInfo->fontSize*4;
             widget->textInfo.geometry.y=globalPos.y+widget->geometry.y;
 
@@ -108,9 +110,9 @@ void nProgressBarDelete(uint16_t nameId)
     {
         widget=linkInfo->widget;
 
-        //���Ҹ�����
+        //查找父链表
         llList_GetInfoByName(&parentInfo,((llGeneral*)widget->parentWidget)->nameId);
-        //���������ڸ������е�λ������
+        //消除自身在父链表中的位置数据
         list_for_each_prev_safe(tempPos, safePos,&parentInfo->child_link)
         {
             tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);
@@ -137,11 +139,10 @@ llProgressBar *llProgressBarQuickCreate(uint16_t nameId, uint16_t parentNameId, 
     llListWidgetInfo *parentInfo;
     uint8_t *pText = NULL;
 
-    //��鸸�������
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llProgressBar);
-    pText=(uint8_t *)llMalloc(5*sizeof(uint8_t));
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llProgressBar);
+        pText=(uint8_t *)llMalloc(5*sizeof(uint8_t));
 
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
