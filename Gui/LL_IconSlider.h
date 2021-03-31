@@ -26,15 +26,14 @@
 typedef struct
 {
     LLGENERAL_ATTRIBUTES;
+    bool isHorizontalScroll:1;//水平移动
+    bool isPageMove:1;
+    bool isClickItem:1;
+    bool isWaitRefresh:1;
     uint8_t rowCount;
     uint8_t columnCount;
     uint8_t itemWidth;
     uint8_t itemHeight;
-    llHorizontalAlign hAlign:2;
-    llVerticalAlign vAlign:2;
-    bool isHorizontalScroll:1;//水平移动
-    bool isPageMove:1;
-    bool isClickItem:1;
     uint8_t page;
     uint8_t pageMax;
     uint8_t pageSpacing;
@@ -54,7 +53,6 @@ llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
                                           int16_t x, int16_t y, int16_t width, int16_t height,
                                           uint8_t rowCount,uint8_t columnCount,
                                           uint8_t itemWidth,uint8_t itemHeight,
-                                          llHorizontalAlign hAlign,llVerticalAlign vAlign,
                                           uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                           bool isHorizontalScroll,bool isHidden);
 
@@ -63,10 +61,12 @@ llIconSlider *llIconSliderCreate(uint16_t nameId, uint16_t parentNameId,
                                      uint8_t rowCount,uint8_t columnCount,
                                      uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                      bool isHorizontalScroll,bool isHidden);
+void nIconSliderLoop(uint16_t nameId);
 
 void pIconSliderAddImage(llIconSlider *widget,uint32_t imageAddr);
 void nIconSliderAddImage(uint16_t nameId,uint32_t imageAddr);
 
-void nIconSliderLoop(uint16_t nameId);
+uint16_t pIconSliderGetClickItemNum(llIconSlider *widget);
+uint16_t nIconSliderGetClickItemNum(uint16_t nameId);
 
 #endif //_LL_ICON_SLIDER_H_

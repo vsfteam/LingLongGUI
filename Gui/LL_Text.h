@@ -31,12 +31,13 @@ extern "C" {
 typedef struct
 {
     LLGENERAL_ATTRIBUTES;
+    bool isLineBreak:1;
     llChar textInfo;
-    llGeometry sysGeometry;//Êµ¼ÊÏÔÊ¾µÄ×ø±ê²ÎÊı,ÓÃÓÚÁÙÊ±¼ÇÂ¼
+    llGeometry sysGeometry;//å®é™…æ˜¾ç¤ºçš„åæ ‡å‚æ•°,ç”¨äºä¸´æ—¶è®°å½•
     int16_t moveHorizontal;
-    int16_t moveVertical;//±¾´ÎÆ«ÒÆÖµ,ÓÃÓÚÁÙÊ±¼ÇÂ¼
+    int16_t moveVertical;//æœ¬æ¬¡åç§»å€¼,ç”¨äºä¸´æ—¶è®°å½•
     int16_t offsetHorizontal;
-    int16_t offsetVertical;//ÉÏ´ÎÆ«ÒÆÖµ,ÓÃÓÚÁÙÊ±¼ÇÂ¼
+    int16_t offsetVertical;//ä¸Šæ¬¡åç§»å€¼,ç”¨äºä¸´æ—¶è®°å½•
     llPoint sysClickedPos;
 }llText;
 

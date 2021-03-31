@@ -71,7 +71,7 @@ void llTextAction(void *widget,uint8_t touchSignal)
         case SIGNAL_CLICK_PRESSED:
         {
             //限定top显示才有效
-            if(((llText*)widget)->textInfo.vAlign==llAlignVTop)
+            if((((llText*)widget)->textInfo.vAlign==llAlignVTop)&&(((llText*)widget)->isLineBreak))
             {
                 clickState=llClickGetPoint(&pos.x,&pos.y);
                 if(clickState==true)
@@ -86,7 +86,7 @@ void llTextAction(void *widget,uint8_t touchSignal)
         case SIGNAL_CLICK_RELEASED:
         {
             //限定top显示才有效
-            if(((llText*)widget)->textInfo.vAlign==llAlignVTop)
+            if((((llText*)widget)->textInfo.vAlign==llAlignVTop)&&(((llText*)widget)->isLineBreak))
             {
                 if(((llText*)widget)->sysGeometry.y>((llText*)widget)->geometry.y)
                 {
@@ -104,7 +104,7 @@ void llTextAction(void *widget,uint8_t touchSignal)
         case SIGNAL_CLICK_HOLD_MOVE:
         {
             //限定top显示才有效
-            if(((llText*)widget)->textInfo.vAlign==llAlignVTop)
+            if((((llText*)widget)->textInfo.vAlign==llAlignVTop)&&(((llText*)widget)->isLineBreak))
             {
                 llEmitSignal(widget,touchSignal);
             }
@@ -178,6 +178,20 @@ bool slotTextMoveVertical(llConnectInfo info)
     return false;
 }
 
+bool isLineBreak(uint8_t *text)
+{
+    uint16_t textLen;
+    textLen=strlen((const char*)text);
+    while(textLen--)
+    {
+        if(text[textLen-1]=='\n')
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 llText *llTextQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int16_t y, int16_t width, int16_t height,
                           uint8_t *text,llFontLib *fontLib,llColor textColor,llColor bgColor,
                           llHorizontalAlign hAlign,llVerticalAlign vAlign,
@@ -240,6 +254,7 @@ llText *llTextQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int
 
             pNewWidget->textInfo.charColor=textColor;
 
+            pNewWidget->isLineBreak= isLineBreak(pText);
             pTextRefresh(pNewWidget);
 
             llConnectSignal(nameId,SIGNAL_CLICK_HOLD_MOVE,nameId,slotTextMoveVertical);
@@ -377,6 +392,8 @@ void pTextSetText(llText *widget,uint8_t *text)
         }
         strcpy((char *)pText,(const char *)text);
         widget->textInfo.text=pText;
+        
+        widget->isLineBreak= isLineBreak(pText);
         pTextRecoverBackGround(widget,widget->geometry);
         pTextRefresh(widget);
     }

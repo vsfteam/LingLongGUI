@@ -13,6 +13,8 @@ bool slotIconSliderPressed(llConnectInfo info)
     int16_t x,y;
     widget=(llIconSlider*)info.receiver;
 
+    if(widget->isEnable)
+    {
     if(llClickGetPoint(&x,&y)==true)
     {
         llTimer_stop(&widget->clickTimer);
@@ -20,6 +22,7 @@ bool slotIconSliderPressed(llConnectInfo info)
         widget->clickPoint.x=x;
         widget->clickPoint.y=y;
         return true;
+    }
     }
     return false;
 }
@@ -30,7 +33,8 @@ bool slotIconSliderReleased(llConnectInfo info)
     uint8_t itemNumMod,minShowItemCount;
 
     widget=(llIconSlider*)info.receiver;
-
+    if(widget->isEnable)
+    {
     if(widget->isPageMove)
     {
         if((widget->moveOffset>30)||(widget->moveOffset<-30))
@@ -215,7 +219,7 @@ bool slotIconSliderReleased(llConnectInfo info)
     }
 
     pIconSliderRefresh(widget);
-
+    }
     return false;
 }
 
@@ -227,6 +231,8 @@ bool slotIconSliderMove(llConnectInfo info)
 
     widget=(llIconSlider*)info.receiver;
 
+    if(widget->isEnable)
+    {
     clickState=llClickGetPoint(&nowX,&nowY);
     if(clickState==true)
     {
@@ -289,6 +295,7 @@ bool slotIconSliderMove(llConnectInfo info)
             }
         }
     }
+    }
     return false;
 }
 
@@ -296,7 +303,6 @@ llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
                                           int16_t x, int16_t y, int16_t width, int16_t height,
                                           uint8_t rowCount,uint8_t columnCount,
                                           uint8_t itemWidth,uint8_t itemHeight,
-                                          llHorizontalAlign hAlign,llVerticalAlign vAlign,
                                           uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
                                           bool isHorizontalScroll,bool isHidden)
 {
@@ -330,8 +336,6 @@ llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
             pNewWidget->columnCount=columnCount;
             pNewWidget->itemWidth=itemWidth;
             pNewWidget->itemHeight=itemHeight;
-            pNewWidget->hAlign=hAlign;
-            pNewWidget->vAlign=vAlign;
 
             pNewWidget->deleteFunc=nIconSliderDelete;
             pNewWidget->actionFunc=llIconSliderAction;
@@ -346,6 +350,7 @@ llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
             pNewWidget->pageSpacing=pageSpacing;
             pNewWidget->isPageMove=isPageMove;
             pNewWidget->isClickItem=true;
+            pNewWidget->isWaitRefresh=false;
             //add linked list
             llListWidgetAdd(&(parentInfo->child_link),pNewWidget);
 
@@ -372,7 +377,6 @@ llIconSlider *llIconSliderCreate(uint16_t nameId, uint16_t parentNameId,
 {
     return llIconSliderQuickCreate(nameId,parentNameId,x,y,width,height,rowCount,columnCount,
                                      (uint8_t)(width/rowCount),(uint8_t)(height/columnCount),
-                                     llAlignHCenter,llAlignVCenter,
                                      pageMax,pageSpacing,isPageMove,
                                      isHorizontalScroll,isHidden);
 }
@@ -404,7 +408,12 @@ void pIconSliderLoop(llIconSlider *widget)
     
     int16_t nowX,nowY;
     bool clickState;
-    pIconSliderRefresh((llIconSlider*)widget);
+
+    if(widget->isWaitRefresh)
+    {
+        widget->isWaitRefresh=false;
+        pIconSliderRefresh((llIconSlider*)widget);
+    }
     if(llTimer_timeOut(&widget->clickTimer,200,false))
     {
         clickState=llClickGetPoint(&nowX,&nowY);
@@ -680,5 +689,22 @@ void nIconSliderAddImage(uint16_t nameId,uint32_t imageAddr)
     if(widget!=NULL)
     {
         pIconSliderAddImage((llIconSlider*)widget,imageAddr);
+        ((llIconSlider*)widget)->isWaitRefresh=true;
     }
+}
+
+uint16_t pIconSliderGetClickItemNum(llIconSlider *widget)
+{
+    return widget->clickItemNum;
+}
+
+uint16_t nIconSliderGetClickItemNum(uint16_t nameId)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeIconSlider);
+    if(widget!=NULL)
+    {
+        return pIconSliderGetClickItemNum((llIconSlider*)widget);
+    }
+    return 0;
 }

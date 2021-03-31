@@ -462,7 +462,7 @@ llSize llGeneralGetImageSize(uint32_t imageAddr)
 {
     llSize retSize= {0};
     imageHeaderTypedef imageHeader;
-    if(imageAddr!=0xFFFFFFFF)
+    if(imageAddr!=IMAGE_NONE)
     {
         llReadExFlash(imageAddr,(uint8_t*)&imageHeader,16);
         retSize.width=imageHeader.width;
@@ -475,7 +475,7 @@ llGeometry llGeneralGetImageGeometry(int16_t x,int16_t y,uint32_t imageAddr)
 {
     llGeometry retGeometry= {0};
     imageHeaderTypedef imageHeader;
-    if(imageAddr!=0xFFFFFFFF)
+    if(imageAddr!=IMAGE_NONE)
     {
         llReadExFlash(imageAddr,(uint8_t*)&imageHeader,16);
         retGeometry.x=x;
