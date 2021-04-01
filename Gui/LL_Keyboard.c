@@ -198,12 +198,13 @@ bool slotKeyboardNumClose(llConnectInfo info)
 
     rootWidget=llListGetRootWidget();
 
+    nWindowDelete(DEF_ID_KEYBOARD);
+
     if(rootWidget->geometry.y!=0)
     {
         pBackgroundMove((llBackground*)rootWidget,0,0);
     }
 
-    nWindowDelete(DEF_ID_KEYBOARD);
     llCharStopCursorBlink();
     return true;
 }

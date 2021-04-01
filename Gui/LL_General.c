@@ -830,7 +830,7 @@ void llRgbFillSpecificAreaMultipleColors(llGeometry originGeometry,llGeometry ta
 void llGeneralImageSpecificAreaShow(llGeneral *widget,llGeometry originGeometry,llGeometry targetGeometry,uint32_t imageAddr)
 {
     uint32_t addr=0,bgAddr=0,tempAddr=0;
-    llPoint tempPoint;
+    llPoint tempPoint,tempPoint2;
     uint16_t writePixelCount=0;//读取一次能写多少个像素
     uint16_t writeHeightCount=0; //一次最多能读多少行， 如果不够一行的话就是 0
     uint16_t currHeight = 0; // 当可以写多于一行， 这个是用于存储当前实际能写多少行
@@ -888,6 +888,8 @@ parentBackgroundType = llGeneralGetParentBackgroundInfo(widget,&bgColor,&bgImage
     tempPoint.x=targetGeometry.x;
     tempPoint.y=targetGeometry.y;
 
+    tempPoint2.x=tempPoint.x;
+    tempPoint2.y=tempPoint.y;
     i=0;
     while(i < totalCount)
     {
@@ -954,9 +956,9 @@ parentBackgroundType = llGeneralGetParentBackgroundInfo(widget,&bgColor,&bgImage
 
                         for(j=0; j<currHeight; j++)
                         {
-                            tempAddr=llGeneralGetParentOverlapColor(bgAddr,bgGeometry,tempPoint,convertTypeBit[CONVERT_TYPE_565]);
+                            tempAddr=llGeneralGetParentOverlapColor(bgAddr,bgGeometry,tempPoint2,convertTypeBit[CONVERT_TYPE_565]);
                             llReadExFlash(tempAddr,&bgUnionReadBuf.u8ReadBuf[j*2*targetGeometry.width],2 *targetGeometry.width);
-                            tempPoint.y++;
+                            tempPoint2.y++;
                         }
                         for(j=0; j<(targetGeometry.width*currHeight); j++)
                         {

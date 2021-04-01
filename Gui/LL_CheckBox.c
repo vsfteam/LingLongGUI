@@ -159,8 +159,8 @@ void pCheckBoxRefresh(llCheckBox *widget,bool toggle)
 
         //更新文字坐标
         widget->textInfo.geometry.x=widget->geometry.x+globalPos.x+12+5;
-        widget->textInfo.geometry.y=RECTANGLE_MID_Y_POS(widget->geometry.y+globalPos.y,textHeight,widget->geometry.height);
-        widget->textInfo.geometry.width=widget->textInfo.geometry.width-12-5;
+        widget->textInfo.geometry.y=widget->geometry.y+globalPos.y;
+        widget->textInfo.geometry.width=widget->geometry.width-12-5;
         widget->textInfo.showGeometry=widget->textInfo.geometry;
 
         llCharDisplay(&(widget->textInfo));

@@ -142,14 +142,14 @@ void pLineEditRefresh(llLineEdit *widget)
 
         widget->textInfo.showGeometry=widget->textInfo.geometry;
 
-        //判断是否过长,过长截断,无视有效长度
+        llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
 
+        //判断是否过长,过长截断,无视有效长度
         while(widget->textInfo.text[strTemp]!=0)
         {
             //英文 0x0-0x7F
             if(widget->textInfo.text[strTemp]<0x80)
             {
-
                 textStrWidth+=llFontGetWidthSize(&widget->textInfo.text[strTemp]);
             }
             else
@@ -165,7 +165,6 @@ void pLineEditRefresh(llLineEdit *widget)
 
         if(textStrWidth<=(widget->textInfo.geometry.width-3))//小于(内宽度+光标)
         {
-            llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
             llCharDisplay(&(widget->textInfo));
 
             //画边框

@@ -98,15 +98,15 @@ bool slotIconSliderReleased(llConnectInfo info)
             {
                 if(widget->moveOffset<0)//向左拖动
                 {
-                    widget->itemNum=(-widget->moveX)/widget->itemWidth;
-                    itemNumMod=(-widget->moveX)%widget->itemWidth;
+                    widget->itemNum=(-widget->moveX)/(widget->itemWidth+widget->pageSpacing);
+                    itemNumMod=(-widget->moveX)%(widget->itemWidth+widget->pageSpacing);
                     if(itemNumMod>(widget->itemWidth>>1))
                     {
                         widget->itemNum++;
                     }
 
                     //计算能显示几个图片
-                    minShowItemCount=widget->geometry.width/widget->itemWidth;
+                    minShowItemCount=(widget->geometry.width+widget->pageSpacing)/(widget->itemWidth+widget->pageSpacing);
 
                     if(widget->imageCount>minShowItemCount)
                     {
@@ -114,7 +114,7 @@ bool slotIconSliderReleased(llConnectInfo info)
                         {
                             widget->itemNum=widget->imageCount-minShowItemCount;
                         }
-                        widget->moveX=-widget->itemNum*widget->itemWidth;
+                        widget->moveX=-widget->itemNum*(widget->itemWidth+widget->pageSpacing);
                     }
                     else
                     {
@@ -131,8 +131,8 @@ bool slotIconSliderReleased(llConnectInfo info)
                     }
                     else
                     {
-                    widget->itemNum=(-widget->moveX)/widget->itemWidth;
-                    itemNumMod=(-widget->moveX)%widget->itemWidth;
+                    widget->itemNum=(-widget->moveX)/(widget->itemWidth+widget->pageSpacing);
+                    itemNumMod=(-widget->moveX)%(widget->itemWidth+widget->pageSpacing);
                     if(itemNumMod>(widget->itemWidth>>1))
                     {
                         widget->itemNum++;
@@ -142,7 +142,7 @@ bool slotIconSliderReleased(llConnectInfo info)
                         widget->itemNum=widget->imageCount-1;
                     }
 
-                    widget->moveX=-widget->itemNum*widget->itemWidth;
+                    widget->moveX=-widget->itemNum*(widget->itemWidth+widget->pageSpacing);
                     }
                 }
             }
@@ -150,15 +150,15 @@ bool slotIconSliderReleased(llConnectInfo info)
             {
                 if(widget->moveOffset<0)//向上拖动
                 {
-                    widget->itemNum=(-widget->moveY)/widget->itemHeight;
-                    itemNumMod=(-widget->moveY)%widget->itemHeight;
+                    widget->itemNum=(-widget->moveY)/(widget->itemHeight+widget->pageSpacing);
+                    itemNumMod=(-widget->moveY)%(widget->itemHeight+widget->pageSpacing);
                     if(itemNumMod>(widget->itemHeight>>1))
                     {
                         widget->itemNum++;
                     }
 
                     //计算能显示几个图片
-                    minShowItemCount=widget->geometry.height/widget->itemHeight;
+                    minShowItemCount=(widget->geometry.height+widget->pageSpacing)/(widget->itemHeight+widget->pageSpacing);
 
                     if(widget->imageCount>minShowItemCount)
                     {
@@ -166,7 +166,7 @@ bool slotIconSliderReleased(llConnectInfo info)
                         {
                             widget->itemNum=widget->imageCount-minShowItemCount;
                         }
-                        widget->moveY=-widget->itemNum*widget->itemHeight;
+                        widget->moveY=-widget->itemNum*(widget->itemHeight+widget->pageSpacing);
                     }
                     else
                     {
@@ -183,8 +183,8 @@ bool slotIconSliderReleased(llConnectInfo info)
                     }
                     else
                     {
-                    widget->itemNum=(-widget->moveY)/widget->itemHeight;
-                    itemNumMod=(-widget->moveY)%widget->itemHeight;
+                    widget->itemNum=(-widget->moveY)/(widget->itemHeight+widget->pageSpacing);
+                    itemNumMod=(-widget->moveY)%(widget->itemHeight+widget->pageSpacing);
                     if(itemNumMod>(widget->itemHeight>>1))
                     {
                         widget->itemNum++;
@@ -194,7 +194,7 @@ bool slotIconSliderReleased(llConnectInfo info)
                         widget->itemNum=widget->imageCount-1;
                     }
 
-                    widget->moveY=-widget->itemNum*widget->itemHeight;
+                    widget->moveY=-widget->itemNum*(widget->itemHeight+widget->pageSpacing);
                     }
                 }
             }
@@ -204,11 +204,11 @@ bool slotIconSliderReleased(llConnectInfo info)
             //还原
             if(widget->isHorizontalScroll)//水平
             {
-                widget->moveX=-widget->itemNum*widget->itemWidth;
+                widget->moveX=-widget->itemNum*(widget->itemWidth+widget->pageSpacing);
             }
             else
             {
-                widget->moveY=-widget->itemNum*widget->itemHeight;
+                widget->moveY=-widget->itemNum*(widget->itemHeight+widget->pageSpacing);
             }
         }
     }
@@ -574,7 +574,7 @@ void pIconSliderRefresh(llIconSlider *widget)
         {
             if(widget->isHorizontalScroll)//水平
             {
-                imgGeometry.x=globalPos.x+widget->moveX+widget->geometry.width+(i*(widget->geometry.width+widget->pageSpacing));
+                imgGeometry.x=globalPos.x+widget->moveX+widget->itemWidth*widget->columnCount+(i*(widget->itemWidth+widget->pageSpacing));
                 imgGeometry.y=globalPos.y;
                 imgGeometry.width=widget->pageSpacing;
                 imgGeometry.height=widget->geometry.height;
@@ -587,7 +587,7 @@ void pIconSliderRefresh(llIconSlider *widget)
             else
             {
                 imgGeometry.x=globalPos.x;
-                imgGeometry.y=globalPos.y+widget->moveY+widget->geometry.height+(i*(widget->geometry.height+widget->pageSpacing));
+                imgGeometry.y=globalPos.y+widget->moveY+widget->itemHeight*widget->rowCount+(i*(widget->itemHeight+widget->pageSpacing));
                 imgGeometry.width=widget->geometry.width;
                 imgGeometry.height=widget->pageSpacing;
 
@@ -621,7 +621,7 @@ void pIconSliderRefresh(llIconSlider *widget)
             if(widget->isHorizontalScroll)
             {
                 x+=page*(skipWidth+widget->pageSpacing);
-                y-=page*widget->geometry.height;
+                y-=page*widget->itemHeight*widget->rowCount;
             }
             else
             {
