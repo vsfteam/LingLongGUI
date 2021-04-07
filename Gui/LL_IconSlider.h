@@ -27,7 +27,6 @@ typedef struct
 {
     LLGENERAL_ATTRIBUTES;
     bool isHorizontalScroll:1;//水平移动
-    bool isPageMove:1;
     bool isClickItem:1;
     bool isWaitRefresh:1;
     uint8_t rowCount;
@@ -53,13 +52,13 @@ llIconSlider *llIconSliderQuickCreate(uint16_t nameId, uint16_t parentNameId,
                                           int16_t x, int16_t y, int16_t width, int16_t height,
                                           uint8_t rowCount,uint8_t columnCount,
                                           uint8_t itemWidth,uint8_t itemHeight,
-                                          uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
+                                          uint8_t pageMax,uint8_t pageSpacing,
                                           bool isHorizontalScroll,bool isHidden);
 
 llIconSlider *llIconSliderCreate(uint16_t nameId, uint16_t parentNameId,
                                      int16_t x, int16_t y, int16_t width, int16_t height,
                                      uint8_t rowCount,uint8_t columnCount,
-                                     uint8_t pageMax,uint8_t pageSpacing,bool isPageMove,
+                                     uint8_t pageMax,uint8_t pageSpacing,
                                      bool isHorizontalScroll,bool isHidden);
 void nIconSliderLoop(uint16_t nameId);
 
