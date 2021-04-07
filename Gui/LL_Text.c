@@ -377,6 +377,8 @@ void pTextSetText(llText *widget,uint8_t *text)
 {
     uint8_t *pText;
     uint16_t textLen;
+    llPoint globalPos;
+    llGeometry recoverGeometry;
     if(widget->isEnable)
     {
         textLen=strlen((const char*)text);
@@ -394,7 +396,13 @@ void pTextSetText(llText *widget,uint8_t *text)
         widget->textInfo.text=pText;
         
         widget->isLineBreak= isLineBreak(pText);
-        pTextRecoverBackGround(widget,widget->geometry);
+
+        globalPos=llListGetGlobalPos(widget->parentWidget);
+        recoverGeometry=widget->geometry;
+        recoverGeometry.x+=globalPos.x;
+        recoverGeometry.y+=globalPos.y;
+
+        pTextRecoverBackGround(widget,recoverGeometry);
         pTextRefresh(widget);
     }
 }
