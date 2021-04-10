@@ -19,17 +19,17 @@
 */
 
 #include "LL_String.h"
-//·´×ª×Ö·û´®
+//åè½¬å­—ç¬¦ä¸²
 static char *reverse(char *s)
 {
     char temp;
-    char *p = s;    //pÖ¸ÏòsµÄÍ·²¿
-    char *q = s;    //qÖ¸ÏòsµÄÎ²²¿
+    char *p = s;    //pæŒ‡å‘sçš„å¤´éƒ¨
+    char *q = s;    //qæŒ‡å‘sçš„å°¾éƒ¨
     while(*q)
         ++q;
     q--;
 
-    //½»»»ÒÆ¶¯Ö¸Õë£¬Ö±µ½pºÍq½»²æ
+    //äº¤æ¢ç§»åŠ¨æŒ‡é’ˆï¼Œç›´åˆ°på’Œqäº¤å‰
     while(q > p)
     {
         temp = *p;
@@ -42,21 +42,21 @@ static char *reverse(char *s)
 static char *my_itoa(int value, char *string,int radix)
 {
     int i = 0,isNegative = 0;
-    if((isNegative = value) < 0) //Èç¹ûÊÇ¸ºÊý£¬ÏÈ×ªÎªÕýÊý
+    if((isNegative = value) < 0) //å¦‚æžœæ˜¯è´Ÿæ•°ï¼Œå…ˆè½¬ä¸ºæ­£æ•°
     {
         value = -value;
     }
-    do      //´Ó¸öÎ»¿ªÊ¼±äÎª×Ö·û£¬Ö±µ½×î¸ßÎ»£¬×îºóÓ¦¸Ã·´×ª
+    do      //ä»Žä¸ªä½å¼€å§‹å˜ä¸ºå­—ç¬¦ï¼Œç›´åˆ°æœ€é«˜ä½ï¼Œæœ€åŽåº”è¯¥åè½¬
     {
         string[i++] = (char)(value%radix + '0');
         value = value/radix;
     }while(value > 0);
 
-    if(isNegative < 0)   //Èç¹ûÊÇ¸ºÊý£¬²¹ÉÏ¸ººÅ
+    if(isNegative < 0)   //å¦‚æžœæ˜¯è´Ÿæ•°ï¼Œè¡¥ä¸Šè´Ÿå·
     {
         string[i++] = '-';
     }
-    string[i] = '\0';    //×îºó¼ÓÉÏ×Ö·û´®½áÊø·û
+    string[i] = '\0';    //æœ€åŽåŠ ä¸Šå­—ç¬¦ä¸²ç»“æŸç¬¦
     return reverse(string);
 }
 
@@ -79,51 +79,49 @@ float llStrToFloat(uint8_t * str)
 
 uint8_t* llFloatToStr(float inFloat,uint8_t afterDecimalPointNum,uint8_t *buf)
 {
-    int temp;
-    uint8_t size;
-    if(afterDecimalPointNum>7)
-    {
-        afterDecimalPointNum=7;
-    }
+    uint8_t len,i,j;
+    bool pointFlag=false;
+    
+    sprintf((char*)buf,"%f",inFloat);
+    
+    len=strlen((const char*)buf);
 
-    //È¥³ýÐ¡Êý
-    for(temp=0;temp<afterDecimalPointNum;temp++)
+    j=0;
+    for(i=0;i<len;i++)
     {
-        inFloat*=10;
-    }
-    //ÕûÊýÊä³ö
-    temp=inFloat;
-    my_itoa(temp,(char*)buf,10);
-
-    //²åÈëÐ¡Êýµã
-    size=strlen((char*)buf);
-    buf[size+1]=0;
-    for(temp=0;temp<afterDecimalPointNum;temp++)
-    {
-        buf[size]=buf[size-1];
-        size--;
-    }
-    buf[size]='.';
-
-    //ÕûÊýÊÇ0
-    if(size==0)
-    {
-        //²åÈëÕûÊý0
-        size=strlen((char*)buf);
-        buf[size+1]=0;
-        for(temp=0;temp<afterDecimalPointNum+1;temp++)
+        if(pointFlag==true)
         {
-            buf[size]=buf[size-1];
-            size--;
+            j++;
+            if(j>afterDecimalPointNum)
+            {
+                buf[i]=0;
+            }
         }
-        buf[size]='0';
+        if(buf[i]=='.')
+        {
+            pointFlag=true;
+        }
     }
 
-    //×Ô¶¯É¾³ýÎ²²¿'0'
-    size=strlen((char*)buf);
-    while(buf[--size]=='0')
+    len=strlen((const char*)buf);
+
+    if(pointFlag==true)
     {
-        buf[size]=0;
+        for(i=(len-1);i>0;i--)
+        {
+            if(buf[i]=='0')
+            {
+                buf[i]=0;
+            }
+            else
+            {
+                if(buf[i]=='.')
+                {
+                    buf[i]=0;
+                }
+                break;
+            }
+        }
     }
     return buf;
 }

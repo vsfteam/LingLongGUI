@@ -197,19 +197,15 @@ void pWindowFree(llWindow *widget)
     llFree(widget->userInfo);
     //    llFree(widget->name);
     llFree(widget);
-
 }
+
 extern volatile bool isQuitPage;
 void nWindowDelete(uint16_t nameId)
 {
-    llListHead *tempPos,*tempPos2,*safePos,*safePos2;
+    llListHead *tempPos,*tempPos2,*safePos;
     llListWidgetInfo *linkInfo;
-    //    llListWidgetInfo *parentInfo;
-    llListWidgetInfo *tempInfo,*tempInfo2;
-    llGeneral *tempWidget,*tempWidget2;
-//    llListConnectInfo *linkConnectTempInfo;
+    llListWidgetInfo *tempInfo;
     llWindow *widget;
-//    llConnectRelation relation;
 
     if(llList_GetInfoByName(&linkInfo,nameId)==true)
     {
@@ -224,34 +220,16 @@ void nWindowDelete(uint16_t nameId)
             ((llGeneral *)tempInfo->widget)->deleteFunc(((llGeneral *)tempInfo->widget)->nameId);
         }
 
-        //消除自身在根控件链表中的位置数据
-        list_for_each_prev_safe(tempPos, safePos, &llWidgetLink)
+        if(llListGetListByWidget(&tempPos2,widget)==true)
         {
-            tempInfo = list_entry(tempPos, llListWidgetInfo, parent_link_pos);
-
-            tempWidget=(llGeneral*)tempInfo->widget;
-
-            if(tempWidget==widget->parentWidget)//要同一个背景中,实际只有一个背景
-            {
-                //继续查子控件
-                list_for_each_prev_safe(tempPos2,safePos2, &(tempInfo->child_link))
-                {
-                    tempInfo2 = list_entry(tempPos2, llListWidgetInfo, parent_link_pos);
-
-                    tempWidget2=(llGeneral*)tempInfo2->widget;
-                    if(tempWidget2==(llGeneral*)widget)
-                    {
-                        if(isQuitPage==false)
+            if(isQuitPage==false)
                         {
                             //先恢复后删除指针
                             pWindowBackgroundRecover(widget);//恢复遮挡背景和控件
                         }
                         llLinkedListDelete(tempPos2);
                         pWindowFree(widget);
-                        llFree(tempInfo2);
-                    }
-                }
-            }
+                        llFree(tempPos2);
         }
 
         //清除connect链表

@@ -34,12 +34,13 @@ extern "C" {
 #define KEYBOARD_NONE    0
 #define KEYBOARD_NUM     1
 #define KEYBOARD_QWERTY  2
-
+#define KEYBOARD_USER    3
 typedef struct
 {
     LLGENERAL_ATTRIBUTES;
     bool isOnlyInputNum:1;
-    bool isInput;//´Ë±äÁ¿²»¿ÉÑ¹Ëõ
+    bool isCursorEnable:1;
+    bool isInput;//æ­¤å˜é‡ä¸å¯å‹ç¼©
     llChar textInfo;
     llFontLib *keyboardFontLib;
     uint16_t textMaxLength;
@@ -62,7 +63,8 @@ void pLineEditSetEnabled(llLineEdit *widget, bool state);
 void nLineEditSetEnabled(uint16_t nameId, bool state);
 void pLineEditSetHidden(llLineEdit *widget,bool isHidden);
 void nLineEditSetHidden(uint16_t nameId,bool isHidden);
-
+void pLineEditSetCursorEnable(llLineEdit *widget,bool state);
+void nLineEditSetCursorEnable(uint16_t nameId,bool state);
 void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType);
 #ifdef __cplusplus
 }

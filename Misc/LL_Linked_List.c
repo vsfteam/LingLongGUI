@@ -148,56 +148,41 @@ bool llList_GetInfoByName(llListWidgetInfo **outInfo, uint16_t nameId)
     return llList_GetInfoByNameFromLink(&llWidgetLink,outInfo,nameId);
 }
 
-//bool llList_GetParentInfoByLinkFromLink(llListHead *inLink,llListWidgetInfo ** outInfo,llListHead *searchLink)
-//{
-//    llListHead *temp_pos,*safePos;
-//    llListWidgetInfo *link_info;
-//    llGeneral *temp_widget_info;
+bool llListGetListByWidgetFromLink(llListHead *in_link,llListHead **outListPos,void* widget)
+{
+    llListHead *temp_pos,*safePos;
+    llListWidgetInfo *link_info;
 
-//    //判断链表是否为空
-//    if((inLink->next!=inLink)&(inLink->prev!=inLink))
-//    {
-//    list_for_each_prev_safe(temp_pos,safePos, inLink)
-//    {
-//        link_info = list_entry(temp_pos, llListWidgetInfo, parent_link_pos);
-//        if(link_info!=NULL)
-//        {
-//            if(&(link_info->parent_link_pos)==searchLink)
-//            {
-//                *outInfo=list_last_entry(temp_pos, llListWidgetInfo, parent_link_pos);
-//                return true;
-//            }
-//            else
-//            {
-//                    if(llList_GetParentInfoByLinkFromLink(&link_info->child_link,outInfo,searchLink)==true)
-//                    {
-//                        *outInfo=link_info;
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    return false;
-//}
+    //判断链表是否为空
+    if((in_link->next!=in_link)&&(in_link->prev!=in_link))
+    {
+        list_for_each_prev_safe(temp_pos,safePos, in_link)
+        {
+            link_info = list_entry(temp_pos, llListWidgetInfo, parent_link_pos);
+            if(link_info!=NULL)
+            {
+                if(widget==link_info->widget)
+                {
+                    *outListPos=temp_pos;
+                    return true;
+                }
+                else
+                {
+                    if(llListGetListByWidgetFromLink(&link_info->child_link,outListPos,widget)==true)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
 
-////  节点头 - 背景
-////         节点头(child) - 按键 - 窗口 -------------- 按键
-////                              节点头(child) - 按键
-
-//bool llList_GetParentInfoByName(llListWidgetInfo **outParentInfo, uint8_t *childName)
-//{
-//    llListWidgetInfo *outInfoTemp;
-
-//    if(llList_GetInfoByNameFromLink(&llWidgetLink,&outInfoTemp,childName)==true)
-//    {
-//        return llList_GetParentInfoByLinkFromLink(&llWidgetLink,outParentInfo,&(outInfoTemp->parent_link_pos));
-//    }
-//    else
-//    {
-//        return false;
-//    }
-//}
+bool llListGetListByWidget(llListHead **outListPos, void* widget)
+{
+    return llListGetListByWidgetFromLink(&llWidgetLink,outListPos,widget);
+}
 
 void* llListGetWidgetFromLink(int16_t x,int16_t y,llListHead *inLink)
 {

@@ -314,6 +314,7 @@ bool slotKeyboardInputSP(llConnectInfo info)
         case KEY_ALL_CLEAN:
         {
             memset(((llLineEdit*)targetWidget)->textInfo.text,0,textLength);
+            ((keyboardInfo*)(win->userInfo))->hasDecimalPoint=false;
         }
         break;
         case KEY_ADD_SUB:

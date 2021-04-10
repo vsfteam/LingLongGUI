@@ -83,6 +83,8 @@ void pLineEditCursorBlink(llLineEdit *widget)
     int16_t x,y;
     uint8_t fontHeight=0;
 
+    if(widget->isCursorEnable)
+    {
     widget->isInput=true;
 
     llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
@@ -92,7 +94,7 @@ void pLineEditCursorBlink(llLineEdit *widget)
     y=llCharCalVerticalPos(&widget->textInfo,fontHeight);
 
     llCharSetCursor(widget,&(widget->isInput),x,y,fontHeight,RGB888(0xffffff));
-
+    }
 }
 
 void llLineEditAction(void *widget,uint8_t touchSignal)
@@ -266,6 +268,7 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->textInfo.vAlign=llAlignVCenter;
             pNewWidget->textInfo.text=pText;
             pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->isCursorEnable=true;
 
             textLength=strlen((const char*)text)+1;
             textLength=((textLength>(cfgLineEditTextLengthMax))?cfgLineEditTextLengthMax:textLength);
@@ -396,6 +399,27 @@ void nLineEditSetHidden(uint16_t nameId,bool isHidden)
     }
 }
 
+void pLineEditSetCursorEnable(llLineEdit *widget,bool state)
+{
+    if(widget->isEnable)
+    {
+        widget->isCursorEnable=state;
+        if(widget->isCursorEnable==false)
+        {
+            llCharStopCursorBlink();
+        }
+    }
+}
+
+void nLineEditSetCursorEnable(uint16_t nameId,bool state)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeLineEdit);
+    if(widget!=NULL)
+    {
+        pLineEditSetCursorEnable(widget,state);
+    }
+}
 
 void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType)
 {
@@ -406,12 +430,6 @@ void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType)
         ((llLineEdit*)widget)->keyboardType=keyboardType;
         switch(keyboardType)
         {
-            case KEYBOARD_NONE:
-            {
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
-                break;
-            }
             case KEYBOARD_NUM:
             {
                 llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
@@ -425,7 +443,11 @@ void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType)
                 break;
             }
             default:
+            {
+                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
+                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
                 break;
+            }
         }
     }
 }

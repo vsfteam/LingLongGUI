@@ -536,15 +536,9 @@ static void *cursorBlinkWidget=NULL;
 static bool *cursorBlinkFlag=NULL;
 void llCharSetCursor(void* blinkWidget,bool *enableFlag,int16_t x,int16_t y,uint16_t cursorBlinkHeight,llColor backgroundColor)
 {
-//    uint8_t lineHeight;
-
-//    lineHeight =llFontGetHeightSize();
-
     cursorBlinkFlag=enableFlag;
-//    if(*enableFlag==true)
-//    {
     cursorBlinkWidget=blinkWidget;
-    //        cursorBlinkState=CURSOR_START;
+
     cursorPos.x=x;
     cursorPos.y=y;
     cursorHeight=cursorBlinkHeight;
@@ -554,16 +548,6 @@ void llCharSetCursor(void* blinkWidget,bool *enableFlag,int16_t x,int16_t y,uint
     llTimer_start(&cursorBlinkCounter);
     cursorShow=true;
     llCharDisplayCursor(cursorPos,cursorHeight,cursorBackgroundColor,&cursorShow);
-//    }
-//    else
-//    {
-//        cursorBlinkWidget=NULL;
-//        cursorBlinkState=CURSOR_STOP;
-
-//        cursorBlinkCounter=0;
-//        cursorShow=false;
-//        llCharDisplayCursor(cursorPos,cursorHeight,cursorBackgroundColor,&cursorShow);
-//    }
 }
 
 void llCharAutoStopCursorBlink(void* clickWidget)
@@ -599,7 +583,6 @@ void llCharCursorBlinkLoop(void)
         {
             //光标闪烁
             llCharDisplayCursor(cursorPos,cursorHeight,cursorBackgroundColor,&cursorShow);
-
         }
     }
 }

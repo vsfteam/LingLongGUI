@@ -38,11 +38,11 @@ static inline void llLinkedListAddTail(struct list_head *newList, struct list_he
     struct list_head * prevObj;
     struct list_head * nextObj;
 
-    //ÕÒ³öÇ°ºó¶ÔÏó,ÖÐ¼ä²åÈë,×ÔÉíÎªÏÂÒ»¸ö¶ÔÏó
+    //æ‰¾å‡ºå‰åŽå¯¹è±¡,ä¸­é—´æ’å…¥,è‡ªèº«ä¸ºä¸‹ä¸€ä¸ªå¯¹è±¡
     prevObj=head->prev;
     nextObj=head;
     
-    //²åÈëÐÂ¶ÔÏó
+    //æ’å…¥æ–°å¯¹è±¡
     nextObj->prev = newList;
     newList->next = nextObj;
     newList->prev = prevObj;
@@ -54,11 +54,11 @@ static inline void llLinkedListDelete(struct list_head *target)
     struct list_head * prevObj;
     struct list_head * nextObj;
     
-    //ÕÒ³öÇ°ºó¶ÔÏó
+    //æ‰¾å‡ºå‰åŽå¯¹è±¡
     prevObj=target->prev;
     nextObj=target->next;
     
-    //Ç°ºóÖ¸ÕëÏàÁ¬
+    //å‰åŽæŒ‡é’ˆç›¸è¿ž
     nextObj->prev = prevObj;
 	prevObj->next = nextObj;
 }
@@ -100,6 +100,7 @@ bool llListConnectFind(llConnectRelation info);
 //uint8_t llListWidgetGetByName(void** widget, uint8_t *name);
 bool llList_GetInfoByName(llListWidgetInfo **outInfo, uint16_t nameId);
 //bool llList_GetParentInfoByName(llListWidgetInfo **outParentInfo, uint8_t *childName);
+bool llListGetListByWidget(llListHead **outListPos, void* widget);
 void* llListGetWidget(int16_t x,int16_t y);
 void* llListGetRootWidget(void);
 //bool llListIsWidgetInArea(void *widget,llGeometry geometry);

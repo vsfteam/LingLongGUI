@@ -566,23 +566,3 @@ void nTextSetHidden(uint16_t nameId,bool isHidden)
         pTextSetHidden(widget,isHidden);
     }
 }
-
-int32_t pTextGetNum(llText *widget)
-{
-    int32_t num;
-    uint8_t *str;
-    str=widget->textInfo.text;
-    sscanf((const char*)str,"%d",&num);
-    return num;
-}
-
-int32_t nTextGetNum(uint16_t nameId)
-{
-    void *widget;
-    widget=llGeneralGetWidget(nameId,widgetTypeText);
-    if(widget!=NULL)
-    {
-        return pTextGetNum(widget);
-    }
-    return 0;
-}

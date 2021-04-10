@@ -78,9 +78,6 @@ void nTextSetEnabled(uint16_t nameId, bool state);
 void pTextSetHidden(llText *widget,bool isHidden);
 void nTextSetHidden(uint16_t nameId,bool isHidden);
 
-int32_t pTextGetNum(llText *widget);
-int32_t nTextGetNum(uint16_t nameId);
-
 #ifdef __cplusplus
 }
 #endif
