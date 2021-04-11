@@ -145,7 +145,7 @@ llQRCode *llQRCodeQuickCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x
     uint8_t *pText = NULL;
     llListWidgetInfo *parentInfo;
 
-    //��鸸�������
+    //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
         pNewWidget = LL_MALLOC_WIDGET_INFO(llQRCode);
@@ -168,7 +168,7 @@ llQRCode *llQRCodeQuickCreate(uint16_t nameId, uint16_t parentNameId, uint16_t x
             pNewWidget->actionFunc=llQRCodeAction;
             pNewWidget->refreshFunc=nQRCodeRefresh;
 
-            pNewWidget->qrText=qrText;
+            pNewWidget->qrText=pText;
             pNewWidget->qrEcc=qrEcc;
             pNewWidget->qrMask=qrMask;
             pNewWidget->qrMaxVersion=qrMaxVersion;
