@@ -243,6 +243,7 @@ llCheckBox *llCheckBoxQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t 
             pNewWidget->textInfo.text=pText;
             pNewWidget->isEnable=true;
             pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->textInfo.isPassword=false;
 
             textLength=strlen((const char*)text)+1;
             textLength=((textLength>(cfgCheckBoxTextLengthMax))?cfgCheckBoxTextLengthMax:textLength);

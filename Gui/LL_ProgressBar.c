@@ -185,6 +185,7 @@ llProgressBar *llProgressBarQuickCreate(uint16_t nameId, uint16_t parentNameId, 
             pNewWidget->textInfo.vAlign=llAlignVCenter;
             pNewWidget->textInfo.text=pText;
             pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->textInfo.isPassword=false;
 
             llI32ToStr(pNewWidget->percent,pText);
             strcat((char*)pText,"%");

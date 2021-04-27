@@ -38,6 +38,7 @@ typedef struct
 
     bool isTransparent:1;
     bool isAutoLineBreak:1;
+    bool isPassword:1;
     llHorizontalAlign hAlign:2;
     llVerticalAlign vAlign:2;
 

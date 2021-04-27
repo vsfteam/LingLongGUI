@@ -73,6 +73,8 @@ void pLineEditSetMinNum(llLineEdit *widget,float value);
 void nLineEditSetMinNum(uint16_t nameId,float value);
 void pLineEditSetMaxNum(llLineEdit *widget,float value);
 void nLineEditSetMaxNum(uint16_t nameId,float value);
+void pLineEditPasswordEnable(llLineEdit *widget,bool enable);
+void nLineEditPasswordEnable(uint16_t nameId,bool enable);
 #ifdef __cplusplus
 }
 #endif

@@ -492,6 +492,7 @@ llButton *llButtonQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
             pNewWidget->textInfo.vAlign=llAlignVCenter;
             pNewWidget->textInfo.text=pText;
             pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->textInfo.isPassword=false;
             textLength=strlen((const char*)text)+1;
             textLength=((textLength>(cfgButtonTextLengthMax))?cfgButtonTextLengthMax:textLength);
 

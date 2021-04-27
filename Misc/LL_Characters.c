@@ -279,11 +279,12 @@ llGeometry llCharGetCharPos(llChar* charInitStruct,uint8_t *str,uint16_t offsetS
     return retGeometry;
 }
 
-void llCharSetText(int16_t x, int16_t y,llGeometry showGeometry, uint8_t *str,llColor Color,uint16_t maxWidth,bool isAutoLineBreak)
+void llCharSetText(int16_t x, int16_t y,llGeometry showGeometry, uint8_t *str,llColor Color,uint16_t maxWidth,bool isAutoLineBreak,bool isPassword)
 {
     uint16_t w,h;
     int16_t oldX;
     uint8_t *buffer=NULL;
+    uint8_t passwordStr='*';
     bool isMalloc=false;
     uint8_t dataBits;
 
@@ -292,10 +293,8 @@ void llCharSetText(int16_t x, int16_t y,llGeometry showGeometry, uint8_t *str,ll
     oldX=x;
     while(*str!=0)
     {
-        h= llFontGetHeightSize();
-        w=llFontGetWidthSize(str);
         buffer=llFontGetData(str,&dataBits,&w,&h,&isMalloc);  /* 取字模数据 */
-
+        
         if(isAutoLineBreak)
         {
             addWidth+=w;
@@ -308,8 +307,20 @@ void llCharSetText(int16_t x, int16_t y,llGeometry showGeometry, uint8_t *str,ll
         }
 
         //英文 0x0-0x7F
-        llCharShowChar(x, y,showGeometry,str,Color);
+        if(isPassword)
+        {
+            llCharShowChar(x, y,showGeometry,&passwordStr,Color);
+        }
+        else
+        {
+            llCharShowChar(x, y,showGeometry,str,Color);
+        }
 
+        if(isMalloc)
+        {
+            llFree(buffer);
+        }
+        
         if(*str>=0x80)
         {
             //utf8 chinese use 3 bytes
@@ -501,7 +512,7 @@ llGeometry llCharDisplay(llChar* charInitStruct)
     realGeometry.width=textWidth;
     realGeometry.height=textHeight;
 
-    llCharSetText(x,y,charInitStruct->showGeometry,charInitStruct->text,charInitStruct->charColor,charInitStruct->geometry.width,charInitStruct->isAutoLineBreak);
+    llCharSetText(x,y,charInitStruct->showGeometry,charInitStruct->text,charInitStruct->charColor,charInitStruct->geometry.width,charInitStruct->isAutoLineBreak,charInitStruct->isPassword);
 
     return realGeometry;
 }

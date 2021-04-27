@@ -215,6 +215,8 @@ llDateTime *llDateTimeQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->textInfo.isTransparent=isTransparent;
             pNewWidget->textInfo.charColor=textColor;
             pNewWidget->textInfo.fontLibInfo=fontLib;
+            pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->textInfo.isPassword=false;
 
             pNewWidget->dateTimeFormat=pDateTimeFormat;
             strcpy((char *)pNewWidget->dateTimeFormat,(const char *)dateTimeFormat);

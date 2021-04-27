@@ -271,6 +271,7 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->textInfo.vAlign=llAlignVCenter;
             pNewWidget->textInfo.text=pText;
             pNewWidget->textInfo.isAutoLineBreak=false;
+            pNewWidget->textInfo.isPassword=false;
             pNewWidget->isCursorEnable=true;
 
             textLength=strlen((const char*)text)+1;
@@ -507,3 +508,22 @@ void nLineEditSetMaxNum(uint16_t nameId,float value)
         pLineEditSetMaxNum(widget,value);
     }
 }
+
+void pLineEditPasswordEnable(llLineEdit *widget,bool enable)
+{
+    if(widget->isEnable)
+    {
+        widget->textInfo.isPassword=enable;
+    }
+}
+
+void nLineEditPasswordEnable(uint16_t nameId,bool enable)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeLineEdit);
+    if(widget!=NULL)
+    {
+        pLineEditPasswordEnable(widget,enable);
+    }
+}
+

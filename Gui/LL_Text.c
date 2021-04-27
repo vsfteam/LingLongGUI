@@ -252,6 +252,7 @@ llText *llTextQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int
             pNewWidget->textInfo.isAutoLineBreak=isAutoLineBreak;
             strcpy((char *)pNewWidget->textInfo.text,(const char *)text);
 
+            pNewWidget->textInfo.isPassword=false;
             pNewWidget->textInfo.charColor=textColor;
 
             pNewWidget->isLineBreak= isLineBreak(pText);
@@ -406,86 +407,6 @@ void pTextSetText(llText *widget,uint8_t *text)
         pTextRefresh(widget);
     }
 }
-
-
-
-//void pTextSetText(llText *widget,uint8_t *text)
-//{
-//    uint8_t *pText,*pNewText,*pOldText;
-//    uint16_t newTextLen,oldTextLen,i;
-//	llGeometry drawGeometry;
-//    if(widget->isEnable)
-//    {
-//		//不同的进行局部刷新
-//		//判断长度
-//		//判断是否相同
-//		//记录数据更新
-//		//多出的填充颜色
-//
-//		pNewText=text;
-//		pOldText=widget->textInfo.text;
-//		newTextLen=strlen((const char*)text);
-//		oldTextLen=strlen((const char*)widget->textInfo.text);
-//        for(i=0;i<newTextLen;)
-//		{
-//			//判断中英文 utf8 chinese use 3 bytes
-//			if(pNewText[i]>=0x80)//chinese
-//			{
-//				if((pNewText[i]!=pOldText[i])||(pNewText[i+1]!=pOldText[i+1])||(pNewText[i+2]!=pOldText[i+2]))//find different character
-//				{
-//					// llPoint llCharGetCharPos(llChar* charInitStruct,uint8_t *str,uint16_t offsetStr,uint16_t maxWidth,bool isAutoLineBreak)
-//					drawGeometry=llCharGetCharPos(&widget->textInfo,pNewText,i);
-//                    pTextRecoverBackGround(widget,drawGeometry);
-//					llCharShowChar(drawGeometry.x,drawGeometry.y,widget->textInfo.showGeometry,&pNewText[i],widget->textInfo.charColor);
-//				}
-//				i=i+3;
-//			}
-//			else//english
-//			{
-//				if(pNewText[i]!=pOldText[i])
-//				{
-//					drawGeometry=llCharGetCharPos(&widget->textInfo,pNewText,i);
-//                    pTextRecoverBackGround(widget,drawGeometry);
-//					llCharShowChar(drawGeometry.x,drawGeometry.y,widget->textInfo.showGeometry,&pNewText[i],widget->textInfo.charColor);
-//				}
-//				i++;
-//			}
-//
-//            if(i>=newTextLen)//结束
-//            {
-//                if(oldTextLen>newTextLen)
-//                {
-//                    drawGeometry=llCharGetCharPos(&widget->textInfo,pNewText,newTextLen-1);
-//                    drawGeometry.x+=drawGeometry.width;
-//                    drawGeometry.width=widget->textInfo.showGeometry.x+widget->textInfo.showGeometry.width-drawGeometry.x;
-//
-//                    pTextRecoverBackGround(widget,drawGeometry);
-//
-//                    drawGeometry.y+=drawGeometry.height;
-//                    drawGeometry.x=widget->textInfo.showGeometry.x;
-//                    drawGeometry.width=widget->textInfo.showGeometry.width;
-//                    drawGeometry.height=widget->textInfo.showGeometry.height+widget->textInfo.showGeometry.y-drawGeometry.y;
-//                    pTextRecoverBackGround(widget,drawGeometry);
-//                }
-//            }
-//		}
-//
-//
-//        if(widget->textInfo.mallocLength<newTextLen)
-//        {
-//            llFree(widget->textInfo.text);
-//            pText=LL_MALLOC_STRING(text);
-//            widget->textInfo.mallocLength=newTextLen;
-//        }
-//        else
-//        {
-//            pText=widget->textInfo.text;
-//        }
-//        strcpy((char *)pText,(const char *)text);
-//        widget->textInfo.text=pText;
-
-//    }
-//}
 
 void nTextSetText(uint16_t nameId,uint8_t *text)
 {
