@@ -40,9 +40,12 @@ typedef struct
     LLGENERAL_ATTRIBUTES;
     bool isOnlyInputNum:1;
     bool isCursorEnable:1;
-    bool isInput;//此变量不可压缩
+    bool isNum:1;
     llChar textInfo;
+    bool isInput;//此变量不可压缩
     llFontLib *keyboardFontLib;
+    float minValue;
+    float maxValue;
     uint16_t textMaxLength;
     uint8_t keyboardType;
 }llLineEdit;
@@ -66,6 +69,10 @@ void nLineEditSetHidden(uint16_t nameId,bool isHidden);
 void pLineEditSetCursorEnable(llLineEdit *widget,bool state);
 void nLineEditSetCursorEnable(uint16_t nameId,bool state);
 void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType);
+void pLineEditSetMinNum(llLineEdit *widget,float value);
+void nLineEditSetMinNum(uint16_t nameId,float value);
+void pLineEditSetMaxNum(llLineEdit *widget,float value);
+void nLineEditSetMaxNum(uint16_t nameId,float value);
 #ifdef __cplusplus
 }
 #endif

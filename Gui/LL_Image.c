@@ -203,3 +203,25 @@ void nImageSetHidden(uint16_t nameId,bool isHidden)
         pImageSetHidden(widget,isHidden);
     }
 }
+
+void pImageMove(llImage *widget,int16_t x, int16_t y)
+{
+    llGeometry oldGeometry,newGeometry;
+    oldGeometry=widget->geometry;
+    widget->isHidden=false;
+    widget->geometry.x=x;
+    widget->geometry.y=y;
+    newGeometry=widget->geometry;
+    llGeneralWidgetParentRecoverMove((llGeneral*)widget,oldGeometry,newGeometry);
+    pImageRefresh(widget);
+}
+
+void nImageMove(uint16_t nameId,int16_t x, int16_t y)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeImage);
+    if(widget!=NULL)
+    {
+        pImageMove(widget,x,y);
+    }
+}

@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * additional license
  * If you use this software to write secondary development type products,
  * must be released under GPL compatible free software license or commercial license.
@@ -85,15 +85,15 @@ void pLineEditCursorBlink(llLineEdit *widget)
 
     if(widget->isCursorEnable)
     {
-    widget->isInput=true;
+        widget->isInput=true;
 
-    llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
+        llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
 
-    fontHeight=llFontGetHeightSize();
-    x=widget->textInfo.geometry.x+widget->textInfo.textPointWidth;
-    y=llCharCalVerticalPos(&widget->textInfo,fontHeight);
+        fontHeight=llFontGetHeightSize();
+        x=widget->textInfo.geometry.x+widget->textInfo.textPointWidth;
+        y=llCharCalVerticalPos(&widget->textInfo,fontHeight);
 
-    llCharSetCursor(widget,&(widget->isInput),x,y,fontHeight,RGB888(0xffffff));
+        llCharSetCursor(widget,&(widget->isInput),x,y,fontHeight,RGB888(0xffffff));
     }
 }
 
@@ -129,72 +129,72 @@ void pLineEditRefresh(llLineEdit *widget)
     {
         if(llGeneralParentLinkHidden((llGeneral*)widget)==false)
         {
-        globalPos=llListGetGlobalPos(widget->parentWidget);
-        //更新文字坐标
-        width=((llGeneral*)widget)->geometry.width;
-        height=((llGeneral*)widget)->geometry.height;
+            globalPos=llListGetGlobalPos(widget->parentWidget);
+            //更新文字坐标
+            width=((llGeneral*)widget)->geometry.width;
+            height=((llGeneral*)widget)->geometry.height;
 
-        globalX=globalPos.x+widget->geometry.x;
-        globalY=globalPos.y+widget->geometry.y;
+            globalX=globalPos.x+widget->geometry.x;
+            globalY=globalPos.y+widget->geometry.y;
 
-        widget->textInfo.geometry.x=globalX+1;//减去边框
-        widget->textInfo.geometry.y=globalY+1;//减去边框
-        widget->textInfo.geometry.width=width-2;//减去边框
-        widget->textInfo.geometry.height=height-2;//减去边框
+            widget->textInfo.geometry.x=globalX+1;//减去边框
+            widget->textInfo.geometry.y=globalY+1;//减去边框
+            widget->textInfo.geometry.width=width-2;//减去边框
+            widget->textInfo.geometry.height=height-2;//减去边框
 
-        widget->textInfo.showGeometry=widget->textInfo.geometry;
+            widget->textInfo.showGeometry=widget->textInfo.geometry;
 
-        llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
+            llCharOpenLibrary(widget->textInfo.fontLibInfo->libType,(uint8_t*)widget->textInfo.fontLibInfo->name,widget->textInfo.fontLibInfo->fontSize);
 
-        //判断是否过长,过长截断,无视有效长度
-        while(widget->textInfo.text[strTemp]!=0)
-        {
-            //英文 0x0-0x7F
-            if(widget->textInfo.text[strTemp]<0x80)
+            //判断是否过长,过长截断,无视有效长度
+            while(widget->textInfo.text[strTemp]!=0)
             {
-                textStrWidth+=llFontGetWidthSize(&widget->textInfo.text[strTemp]);
-            }
-            else
-            {
-                //utf8 chinese use 3 bytes
-                textStrWidth+=llFontGetWidthSize(&widget->textInfo.text[strTemp]);
+                //英文 0x0-0x7F
+                if(widget->textInfo.text[strTemp]<0x80)
+                {
+                    textStrWidth+=llFontGetWidthSize(&widget->textInfo.text[strTemp]);
+                }
+                else
+                {
+                    //utf8 chinese use 3 bytes
+                    textStrWidth+=llFontGetWidthSize(&widget->textInfo.text[strTemp]);
+                    strTemp++;
+                    strTemp++;
+                }
                 strTemp++;
-                strTemp++;
             }
-            strTemp++;
-        }
             widget->textInfo.textPointWidth=textStrWidth;
 
-        if(textStrWidth<=(widget->textInfo.geometry.width-3))//小于(内宽度+光标)
-        {
-            llCharDisplay(&(widget->textInfo));
-
-            //画边框
-            llFillSingleColor(globalX,globalY,globalX+width-1,globalY,RGB_CONVERT(171,173,179));
-            llFillSingleColor(globalX,globalY,globalX,globalY+height-1,RGB_CONVERT(226,227,234));
-            llFillSingleColor(globalX,globalY+height-1,globalX+width-1,globalY+height-1,RGB_CONVERT(227,233,239));
-            llFillSingleColor(globalX+width-1,globalY,globalX+width-1,globalY+height-1,RGB_CONVERT(219,223,230));
-
-            if(widget->isInput==true)
+            if(textStrWidth<=(widget->textInfo.geometry.width-3))//小于(内宽度+光标)
             {
-                pLineEditCursorBlink(widget);
-            }
-        }
-        else
-        {
-            //英文 0x0-0x7F
-            if((widget->textInfo.text[strTemp-1]<0x80)&&(widget->textInfo.text[strTemp-3]<0x80))
-            {
-                widget->textInfo.text[strTemp-1]=0;
+                llCharDisplay(&(widget->textInfo));
+
+                //画边框
+                llFillSingleColor(globalX,globalY,globalX+width-1,globalY,RGB_CONVERT(171,173,179));
+                llFillSingleColor(globalX,globalY,globalX,globalY+height-1,RGB_CONVERT(226,227,234));
+                llFillSingleColor(globalX,globalY+height-1,globalX+width-1,globalY+height-1,RGB_CONVERT(227,233,239));
+                llFillSingleColor(globalX+width-1,globalY,globalX+width-1,globalY+height-1,RGB_CONVERT(219,223,230));
+
+                if(widget->isInput==true)
+                {
+                    pLineEditCursorBlink(widget);
+                }
             }
             else
             {
-                widget->textInfo.text[strTemp-1]=0;
-                widget->textInfo.text[strTemp-2]=0;
-                widget->textInfo.text[strTemp-3]=0;
+                //英文 0x0-0x7F
+                if((widget->textInfo.text[strTemp-1]<0x80)&&(widget->textInfo.text[strTemp-3]<0x80))
+                {
+                    widget->textInfo.text[strTemp-1]=0;
+                }
+                else
+                {
+                    widget->textInfo.text[strTemp-1]=0;
+                    widget->textInfo.text[strTemp-2]=0;
+                    widget->textInfo.text[strTemp-3]=0;
+                }
             }
         }
-    }
     }
 }
 
@@ -212,9 +212,9 @@ void nLineEditRefresh(uint16_t nameId)
 }
 
 llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int16_t y, int16_t width, int16_t height,
-                                uint8_t *text,llFontLib *fontLib,llColor textColor,
-                                llFontLib *keyboardFontLib,
-                                bool isHidden)
+                                  uint8_t *text,llFontLib *fontLib,llColor textColor,
+                                  llFontLib *keyboardFontLib,
+                                  bool isHidden)
 {
     llLineEdit * pNewWidget = NULL;
     uint8_t *pText = NULL;
@@ -224,8 +224,8 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
     //检查父链表存在
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
-    pNewWidget = LL_MALLOC_WIDGET_INFO(llLineEdit);
-    pText=(uint8_t*)llMalloc(sizeof (uint8_t)*cfgLineEditTextLengthMax);
+        pNewWidget = LL_MALLOC_WIDGET_INFO(llLineEdit);
+        pText=(uint8_t*)llMalloc(sizeof (uint8_t)*cfgLineEditTextLengthMax);
 
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
@@ -247,6 +247,9 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->isOnlyInputNum=false;
             pNewWidget->isEnable=true;
             pNewWidget->keyboardType=0;
+            pNewWidget->isNum=false;
+            pNewWidget->minValue=0;
+            pNewWidget->maxValue=100;
 
             //add linked list
 
@@ -297,18 +300,33 @@ llLineEdit *llLineEditCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, 
 void pLineEditSetText(llLineEdit *widget,uint8_t *text)
 {
     uint16_t textLength;
+    float fTemp;
+    bool isInputEnable=true;
 
     if(widget->isEnable)
     {
-        textLength=strlen((const char*)text)+1;
-        textLength=((textLength>(cfgLineEditTextLengthMax))?cfgLineEditTextLengthMax:textLength);
-        memcpy((widget)->textInfo.text,text,textLength);
-        //最后一个字节强制变0
-        ((widget)->textInfo.text)[textLength-1]=0;
+        if(widget->isNum)
+        {
+            fTemp=llStrToFloat(text);
 
-        pLineEditRefresh(widget);
+            if(!((fTemp>=(widget->minValue))&&(fTemp<=(widget->maxValue))))
+            {
+                isInputEnable=false;
+            }
+        }
 
-        llEmitSignal(widget,SIGNAL_VALUE_CHANGED);
+        if(isInputEnable)
+        {
+            textLength=strlen((const char*)text)+1;
+            textLength=((textLength>(cfgLineEditTextLengthMax))?cfgLineEditTextLengthMax:textLength);
+            memcpy((widget)->textInfo.text,text,textLength);
+            //最后一个字节强制变0
+            ((widget)->textInfo.text)[textLength-1]=0;
+
+            pLineEditRefresh(widget);
+
+            llEmitSignal(widget,SIGNAL_VALUE_CHANGED);
+        }
     }
 }
 
@@ -430,26 +448,62 @@ void nLineEditSetKeyboard(uint16_t nameId,uint8_t keyboardType)
         ((llLineEdit*)widget)->keyboardType=keyboardType;
         switch(keyboardType)
         {
-            case KEYBOARD_NUM:
-            {
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
-                llConnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
-                break;
-            }
-            case KEYBOARD_QWERTY:
-            {
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
-                llConnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
-                break;
-            }
-            default:
-            {
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
-                llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
-                break;
-            }
+        case KEYBOARD_NUM:
+        {
+            llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
+            llConnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
+            break;
+        }
+        case KEYBOARD_QWERTY:
+        {
+            llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
+            llConnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
+            break;
+        }
+        default:
+        {
+            llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputNum);
+            llDisconnectSignal(nameId,SIGNAL_WIDGET_ACTIVE,nameId,slotLineEditInputQwerty);
+            break;
+        }
         }
     }
 }
 
+void pLineEditSetMinNum(llLineEdit *widget,float value)
+{
+    if(widget->isEnable)
+    {
+        widget->isNum=true;
+        widget->minValue=value;
+    }
+}
 
+void nLineEditSetMinNum(uint16_t nameId,float value)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeLineEdit);
+    if(widget!=NULL)
+    {
+        pLineEditSetMinNum(widget,value);
+    }
+}
+
+void pLineEditSetMaxNum(llLineEdit *widget,float value)
+{
+    if(widget->isEnable)
+    {
+        widget->isNum=true;
+        widget->maxValue=value;
+    }
+}
+
+void nLineEditSetMaxNum(uint16_t nameId,float value)
+{
+    void *widget;
+    widget=llGeneralGetWidget(nameId,widgetTypeLineEdit);
+    if(widget!=NULL)
+    {
+        pLineEditSetMaxNum(widget,value);
+    }
+}

@@ -29,18 +29,18 @@ extern "C" {
 
 
 
-#define BUTTON_EVENT_DOUBLE_CLICK    5 //¼ì²â°´¼üË«»÷ÐÅºÅ
-#define BUTTON_EVENT_REPEAT_TIMES    6 //»ñÈ¡Á¬»÷´ÎÊý
-#define BUTTON_EVENT_HOLD_TIME_MS       7 //»ñÈ¡°´¼ü°´×¡²»·ÅµÄÊ±¼ä
-#define BUTTON_EVENT_LONG_SHOOT      9 //¼ì²â°´¼ü³¤°´´¥·¢Ò»´ÎºÍÁ¬Ðø´¥·¢µÄÐÅºÅ
+#define BUTTON_EVENT_DOUBLE_CLICK    5 //æ£€æµ‹æŒ‰é”®åŒå‡»ä¿¡å·
+#define BUTTON_EVENT_REPEAT_TIMES    6 //èŽ·å–è¿žå‡»æ¬¡æ•°
+#define BUTTON_EVENT_HOLD_TIME_MS       7 //èŽ·å–æŒ‰é”®æŒ‰ä½ä¸æ”¾çš„æ—¶é—´
+#define BUTTON_EVENT_LONG_SHOOT      9 //æ£€æµ‹æŒ‰é”®é•¿æŒ‰è§¦å‘ä¸€æ¬¡å’Œè¿žç»­è§¦å‘çš„ä¿¡å·
 
 
 
-//ÅäÖÃ²ÎÊý
+//é…ç½®å‚æ•°
 
-#define BUTTON_LONG_MS          1000  //³¤°´´¥·¢Ê±¼ä
-#define BUTTON_LONG_SHOOT_MS    100   //³¤°´Á¬Ðø´¥·¢¼ä¸ô
-#define BUTTON_CLICK_TIME_OUT_MS  500 //Á¬»÷³¬Ê±Ê±¼ä
+#define BUTTON_LONG_MS          1000  //é•¿æŒ‰è§¦å‘æ—¶é—´
+#define BUTTON_LONG_SHOOT_MS    100   //é•¿æŒ‰è¿žç»­è§¦å‘é—´éš”
+#define BUTTON_CLICK_TIME_OUT_MS  500 //è¿žå‡»è¶…æ—¶æ—¶é—´
 
 void pButtonExInit(llButton *widget);
 void nButtonExInit(uint16_t nameId);

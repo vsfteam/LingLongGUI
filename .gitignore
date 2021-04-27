@@ -54,3 +54,4 @@ dkms.conf
 #LingLongGuiCfg
 /User/
 *.orig
+/GuiEx/

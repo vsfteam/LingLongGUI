@@ -50,6 +50,8 @@ void pImageSetEnabled(llImage *widget, bool state);
 void nImageSetEnabled(uint16_t nameId, bool state);
 void pImageSetHidden(llImage *widget,bool isHidden);
 void nImageSetHidden(uint16_t nameId,bool isHidden);
+void pImageMove(llImage *widget,int16_t x, int16_t y);
+void nImageMove(uint16_t nameId,int16_t x, int16_t y);
 #ifdef __cplusplus
 }
 #endif
