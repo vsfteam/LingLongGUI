@@ -75,7 +75,8 @@ typedef enum{
     widgetTypeGauge,
     widgetTypeQRCode,
     widgetTypeDateTime,
-    widgetTypeIconSlider
+    widgetTypeIconSlider,
+    widgetTypeComboBox
 }llWidgetType;
 
 #define LLGENERAL_ATTRIBUTES  llWidgetType widgetType; \
@@ -142,7 +143,7 @@ typedef enum
 typedef struct
 {
     llFontLibType libType;
-    uint8_t name[LLFONT_NAME_LENGTH_MAX];
+    uint8_t name[LL_FONT_NAME_LENGTH_MAX];
     uint16_t fontSize;
     void * pointer;
 }llFontLib;
@@ -206,6 +207,7 @@ void llGeneralWidgetSelect(llGeneral *widget);
 void llGeneralWidgetParentRecover(llGeneral *widget,llGeometry geometry);
 bool llGeneralParentLinkHidden(llGeneral *widget);
 void llGeneralWidgetParentRecoverMove(llGeneral *widget,llGeometry oldGeometry,llGeometry newGeometry);
+void llGeneralRecover(llGeneral *widget,llGeometry targetGeometry);
 
 #define PARENT_BACKGROUND_TYPE_ERROR   0
 #define PARENT_BACKGROUND_TYPE_COLOR   1

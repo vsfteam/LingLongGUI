@@ -181,21 +181,24 @@ void llHandlerClickedAction(uint8_t touchSignal,int16_t x,int16_t y)
     switch(touchSignal)
     {
     case SIGNAL_CLICK_NO_OPERATION:
+    {
         break;
+    }
     case SIGNAL_CLICK_PRESSED:
-
+    {
         widget=llListGetWidget(x,y);
         prevX=x;
         prevY=y;
         prevWidget=widget;//准备数据,释放时候使用
 
-//            llCharAutoStopCursorBlink(widget);
         if(widget!=NULL)
         {
             ((llGeneral*)widget)->actionFunc(widget,touchSignal);
         }
         break;
+    }
     case SIGNAL_CLICK_HOLD_DOWN:
+    {
         if((prevX!=x)||(prevY!=y))
         {
             prevX=x;
@@ -206,16 +209,17 @@ void llHandlerClickedAction(uint8_t touchSignal,int16_t x,int16_t y)
                 ((llGeneral*)widget)->actionFunc(widget,SIGNAL_CLICK_HOLD_MOVE);
             }
         }
-
-
         break;
+    }
     case SIGNAL_CLICK_RELEASED:
+    {
         widget=prevWidget;
         if(widget!=NULL)
         {
             ((llGeneral*)widget)->actionFunc(widget,touchSignal);
         }
         break;
+    }
     default:
         break;
     }

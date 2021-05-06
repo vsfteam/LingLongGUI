@@ -352,21 +352,22 @@ void nTextSetBackgroundColor(uint16_t nameId,llColor color)
     }
 }
 
-void pTextRecoverBackGround(llText *widget,llGeometry geometry)
+void pTextRecoverBackground(llText *widget,llGeometry geometry)
 {
     if(widget->textInfo.isTransparent)
     {
-        if(widget->parentType==widgetTypeWindow)
-        {
-            pWindowSpecificAreaRecover(widget->parentWidget,geometry);
-        }
-        else
-        {
-            if(widget->parentType==widgetTypeBackground)
-            {
-                pBackgroundSpecificAreaRecover(widget->parentWidget,geometry);
-            }
-        }
+        llGeneralWidgetParentRecover((llGeneral*)widget,geometry);
+//        if(widget->parentType==widgetTypeWindow)
+//        {
+//            pWindowSpecificAreaRecover(widget->parentWidget,geometry);
+//        }
+//        else
+//        {
+//            if(widget->parentType==widgetTypeBackground)
+//            {
+//                pBackgroundSpecificAreaRecover(widget->parentWidget,geometry);
+//            }
+//        }
     }
     else
     {
@@ -403,7 +404,7 @@ void pTextSetText(llText *widget,uint8_t *text)
         recoverGeometry.x+=globalPos.x;
         recoverGeometry.y+=globalPos.y;
 
-        pTextRecoverBackGround(widget,recoverGeometry);
+        pTextRecoverBackground(widget,recoverGeometry);
         pTextRefresh(widget);
     }
 }

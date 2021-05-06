@@ -201,7 +201,7 @@ llCheckBox *llCheckBoxQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t 
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
         pNewWidget = LL_MALLOC_WIDGET_INFO(llCheckBox);
-        pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
+        pText=(uint8_t *)llMalloc(LL_CHECKBOX_TEXT_LENGTH_MAX*sizeof(uint8_t));
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;
@@ -246,7 +246,7 @@ llCheckBox *llCheckBoxQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t 
             pNewWidget->textInfo.isPassword=false;
 
             textLength=strlen((const char*)text)+1;
-            textLength=((textLength>(cfgCheckBoxTextLengthMax))?cfgCheckBoxTextLengthMax:textLength);
+            textLength=((textLength>LL_CHECKBOX_TEXT_LENGTH_MAX)?LL_CHECKBOX_TEXT_LENGTH_MAX:textLength);
 
             memcpy(pNewWidget->textInfo.text,text,textLength);
             //最后一个字节强制变0

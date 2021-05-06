@@ -334,21 +334,22 @@ void nDateTimeSetBackgroundColor(uint16_t nameId,llColor color)
     }
 }
 
-void pDateTimeRecoverBackGround(llDateTime *widget,llGeometry geometry)
+void pDateTimeRecoverBackground(llDateTime *widget,llGeometry geometry)
 {
     if(widget->textInfo.isTransparent)
     {
-        if(widget->parentType==widgetTypeWindow)
-        {
-            pWindowSpecificAreaRecover(widget->parentWidget,geometry);
-        }
-        else
-        {
-            if(widget->parentType==widgetTypeBackground)
-            {
-                pBackgroundSpecificAreaRecover(widget->parentWidget,geometry);
-            }
-        }
+        llGeneralWidgetParentRecover((llGeneral*)widget,geometry);
+//        if(widget->parentType==widgetTypeWindow)
+//        {
+//            pWindowSpecificAreaRecover(widget->parentWidget,geometry);
+//        }
+//        else
+//        {
+//            if(widget->parentType==widgetTypeBackground)
+//            {
+//                pBackgroundSpecificAreaRecover(widget->parentWidget,geometry);
+//            }
+//        }
     }
     else
     {

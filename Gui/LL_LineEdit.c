@@ -225,11 +225,11 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
         pNewWidget = LL_MALLOC_WIDGET_INFO(llLineEdit);
-        pText=(uint8_t*)llMalloc(sizeof (uint8_t)*cfgLineEditTextLengthMax);
+        pText=(uint8_t*)llMalloc(sizeof (uint8_t)*LL_LINEEDIT_TEXT_LENGTH_MAX);
 
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
-            memset(pText,0,cfgLineEditTextLengthMax);
+            memset(pText,0,LL_LINEEDIT_TEXT_LENGTH_MAX);
             pNewWidget->nameId=nameId;
 
             pNewWidget->parentType=((llGeneral*)(parentInfo->widget))->widgetType;
@@ -240,7 +240,7 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->geometry.y=y;
             pNewWidget->geometry.width=width;
             pNewWidget->geometry.height=height;
-            pNewWidget->textMaxLength=cfgLineEditTextLengthMax;
+            pNewWidget->textMaxLength=LL_LINEEDIT_TEXT_LENGTH_MAX;
             pNewWidget->keyboardFontLib=keyboardFontLib;
             pNewWidget->isHidden=isHidden;
             pNewWidget->isInput=false;
@@ -275,7 +275,7 @@ llLineEdit *llLineEditQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_
             pNewWidget->isCursorEnable=true;
 
             textLength=strlen((const char*)text)+1;
-            textLength=((textLength>(cfgLineEditTextLengthMax))?cfgLineEditTextLengthMax:textLength);
+            textLength=((textLength>LL_LINEEDIT_TEXT_LENGTH_MAX)?LL_LINEEDIT_TEXT_LENGTH_MAX:textLength);
 
             memcpy(pNewWidget->textInfo.text,text,textLength);
             //最后一个字节强制变0
@@ -319,7 +319,7 @@ void pLineEditSetText(llLineEdit *widget,uint8_t *text)
         if(isInputEnable)
         {
             textLength=strlen((const char*)text)+1;
-            textLength=((textLength>(cfgLineEditTextLengthMax))?cfgLineEditTextLengthMax:textLength);
+            textLength=((textLength>LL_LINEEDIT_TEXT_LENGTH_MAX)?LL_LINEEDIT_TEXT_LENGTH_MAX:textLength);
             memcpy((widget)->textInfo.text,text,textLength);
             //最后一个字节强制变0
             ((widget)->textInfo.text)[textLength-1]=0;

@@ -440,7 +440,7 @@ llButton *llButtonQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
     if(llList_GetInfoByName(&parentInfo,parentNameId)==true)
     {
         pNewWidget = LL_MALLOC_WIDGET_INFO(llButton);
-        pText=(uint8_t *)llMalloc(cfgButtonTextLengthMax*sizeof(uint8_t));
+        pText=(uint8_t *)llMalloc(LL_BUTTON_TEXT_LENGTH_MAX*sizeof(uint8_t));
         if((pNewWidget!=NULL)&&(pText!=NULL))
         {
             pNewWidget->nameId=nameId;
@@ -494,7 +494,7 @@ llButton *llButtonQuickCreate(uint16_t nameId,uint16_t parentNameId,int16_t x, i
             pNewWidget->textInfo.isAutoLineBreak=false;
             pNewWidget->textInfo.isPassword=false;
             textLength=strlen((const char*)text)+1;
-            textLength=((textLength>(cfgButtonTextLengthMax))?cfgButtonTextLengthMax:textLength);
+            textLength=((textLength>LL_BUTTON_TEXT_LENGTH_MAX)?LL_BUTTON_TEXT_LENGTH_MAX:textLength);
 
             memcpy(pNewWidget->textInfo.text,text,textLength);
             //最后一个字节强制变0
@@ -655,7 +655,7 @@ void pButtonSetText(llButton *widget, uint8_t *text)
     if(widget->isEnable)
     {
         textLength=strlen((const char*)text)+1;
-        textLength=((textLength>(cfgButtonTextLengthMax))?cfgButtonTextLengthMax:textLength);
+        textLength=((textLength>LL_BUTTON_TEXT_LENGTH_MAX)?LL_BUTTON_TEXT_LENGTH_MAX:textLength);
         memcpy(widget->textInfo.text,text,textLength);
         //最后一个字节强制变0
         (widget->textInfo.text)[textLength-1]=0;

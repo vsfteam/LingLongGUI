@@ -117,23 +117,23 @@ bool llRectIsOverlap(llGeometry rc1, llGeometry rc2)
     return false;
 }
 
-/**
- * @brief 判断一个矩形是否在另一个矩形内
- * @param bigRect 大矩阵的位置
- * @param smallRect 小矩阵的位置
- * @return 小矩阵是否在大矩形内（包括边沿重叠）
- */
-bool llRectIsIn(llGeometry bigRect, llGeometry smallRect)
-{
-    if((smallRect.x>=bigRect.x) &&
-            (smallRect.y>=bigRect.y) &&
-            ((smallRect.x+smallRect.width-1)<=(bigRect.x+bigRect.width-1)) &&
-            ((smallRect.y+smallRect.height-1)<=(bigRect.y+bigRect.height-1)) )
-    {
-        return true;
-    }
-    return false;
-}
+///**
+// * @brief 判断一个矩形是否在另一个矩形内
+// * @param bigRect 大矩阵的位置
+// * @param smallRect 小矩阵的位置
+// * @return 小矩阵是否在大矩形内（包括边沿重叠）
+// */
+//bool llRectIsIn(llGeometry bigRect, llGeometry smallRect)
+//{
+//    if((smallRect.x>=bigRect.x) &&
+//            (smallRect.y>=bigRect.y) &&
+//            ((smallRect.x+smallRect.width-1)<=(bigRect.x+bigRect.width-1)) &&
+//            ((smallRect.y+smallRect.height-1)<=(bigRect.y+bigRect.height-1)) )
+//    {
+//        return true;
+//    }
+//    return false;
+//}
 
 /**
  * @brief 判断一个矩形是否在另一个矩形内
@@ -1144,6 +1144,41 @@ void llGeneralWidgetParentRecover(llGeneral *widget,llGeometry geometry)
         if(widget->parentType==widgetTypeWindow)
         {
             pWindowSpecificAreaRecover((llWindow*)widget->parentWidget,geometry);
+        }
+    }
+}
+
+void llGeneralRecover(llGeneral *widget,llGeometry targetGeometry)
+{
+    //遍历控件,判断是否重叠
+    llListHead *tempPos,*tempPos2,*safePos,*safePos2;
+    llListWidgetInfo *tempInfo,*tempInfo2;
+    llGeneral *tempWidget,*tempWidget2;
+
+    llGeneralWidgetParentRecover(widget,targetGeometry);
+
+    //正向开始遍历
+    list_for_each_safe(tempPos,safePos, &llWidgetLink)
+    {
+        tempInfo = list_entry(tempPos,llListWidgetInfo, parent_link_pos);
+
+        tempWidget=(llGeneral*)tempInfo->widget;
+
+        //继续查子控件
+        list_for_each_safe(tempPos2,safePos2, &(tempInfo->child_link))
+        {
+            tempInfo2 = list_entry(tempPos2, llListWidgetInfo, parent_link_pos);
+
+            tempWidget2=(llGeneral*)tempInfo2->widget;
+
+            if((tempWidget2!=widget)&&(tempWidget2->widgetType!=widgetTypeBackground)&&(tempWidget2->widgetType!=widgetTypeWindow))//排除窗体本身
+            {
+                if(llRectIsOverlap(tempWidget2->geometry,targetGeometry)==true)
+                {
+                    //遮盖的控件刷新
+                    tempWidget2->refreshFunc(tempWidget2->nameId);
+                }
+            }
         }
     }
 }
