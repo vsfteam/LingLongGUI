@@ -248,7 +248,7 @@ llText *llTextQuickCreate(uint16_t nameId, uint16_t parentNameId, int16_t x, int
             pNewWidget->textInfo.hAlign=hAlign;
             pNewWidget->textInfo.vAlign=vAlign;
             pNewWidget->textInfo.text=pText;
-            pNewWidget->textInfo.mallocLength=strlen((const char*)pText);
+            pNewWidget->textInfo.mallocLength=strlen((const char*)text);
             pNewWidget->textInfo.isAutoLineBreak=isAutoLineBreak;
             strcpy((char *)pNewWidget->textInfo.text,(const char *)text);
 
